@@ -1,0 +1,22 @@
+package liao.utils;
+
+/**
+ * Created by ao on 2017/10/30.
+ */
+public class TwoTuple<K,V> {
+    private K key;
+    private V value;
+    public TwoTuple(K key,
+            V value){
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey() {
+        return key;
+    }
+
+    public V getValue() {
+        return value;
+    }
+}

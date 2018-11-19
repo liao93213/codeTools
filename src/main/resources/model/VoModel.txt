@@ -1,0 +1,13 @@
+package #basePackage#.model;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import  #basePackage#.model.#className#;
+
+/**
+ * #tableComment#
+ */
+public class #className#Vo extends #className# implements Serializable{
+#content#
+}

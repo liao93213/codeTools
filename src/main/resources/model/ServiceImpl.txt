@@ -1,0 +1,61 @@
+package #basePackage#.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import #basePackage#.model.#className#;
+import #basePackage#.vo.#className#Vo;
+import #basePackage#.dao.#className#Dao;
+import #basePackage#.service.#className#Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
+@Service
+public class #className#ServiceImpl implements #className#Service{
+
+	private static final Logger logger = LoggerFactory.getLogger(#className#ServiceImpl.class);
+
+    @Autowired
+    private #className#Dao #alias#Dao;
+
+    public List<#className#Vo> get#className#ListForPage(#className#Vo #alias#){
+        List<#className#Vo> resultList = #alias#Dao.get#className#ListForPage(#alias#);
+        setPageInfo(resultList);
+        return resultList;
+    }
+
+    private void setPageInfo(List<#className#Vo> resultList){
+
+    }
+
+    public Integer get#className#ListCount(#className#Vo #alias#){
+        return #alias#Dao.get#className#ListCount(#alias#);
+    }
+
+    public #className#Vo get#className#ById(Long id){
+        #className#Vo result = #alias#Dao.get#className#ById(id);
+        return result;
+    }
+
+    public #className#Vo getActivityConfigByIdForPage(Long id){
+        #className#Vo result = #alias#Dao.get#className#ById(id);;
+        setPageInfo(result);
+        return result;
+    }
+
+    private void setPageInfo(#className#Vo #alias#){
+
+    }
+    public void insert#className#(#className#Vo #alias#){
+        #alias#Dao.insert#className#(#alias#);
+    }
+
+    public void update#className#(#className#Vo #alias#){
+        #alias#Dao.update#className#(#alias#);
+    }
+}

@@ -1,0 +1,116 @@
+var optType = document.getElementById("optType").value;
+function save(){
+    var actionName = "add#className#";
+    if(optType == "edit"){
+       actionName =  "update#className#";
+    }
+    if(checkFormData() && confirm("您确定要提交吗?")){
+        $.ajax({
+            type : "post",
+            url : baseContextPath+"/#alais#/"+actionName+".do",
+            data : JSON.stringify(getFormData()),
+            dataType : "json",
+            contentType : "application/json",
+            async : false,
+            error : function(){
+                alert("保存失败");
+            },
+            success : function(data) {
+                alert("保存成功");
+                window.opener.location.reload(true);
+                window.close();
+            }
+        });
+    }
+}
+function checkFormData(){
+    var formData = getFormData();
+#checkFormData#
+}
+function getFormData(){
+    var #alias# = new Object();
+    #alias#.id = getElementById(id);
+#getFormData#
+}
+function ifBlankReturnNull(str) {
+    return str == null || str.trim().length == 0 ? null : str.trim();
+}
+function getElementById(id){
+    return ifBlankReturnNull(document.getElementById(id).value);
+}
+function getRadioValue(name){
+    var radio = document.getElementsByName(name);
+    for (i=0; i<radio.length; i++) {
+        if (radio[i].checked) {
+            return radio[i].value;
+        }
+    }
+}
+function getCheckBoxValues(name){
+
+}
+
+function onlyInputNumber() {
+    var keyCode = event.keyCode;
+    if ((keyCode >= 48 && keyCode <= 57))
+    {
+        event.returnValue = true;
+    } else {
+        event.returnValue = false;
+    }
+}
+
+function blurCheckIsNumber(obj){
+    if((obj.value != null && obj.value != "") && !isNumber(obj.value)){
+        alert("请输入合法的正整数！");
+        obj.focus();
+    }
+}
+function checkIsNumber(val,tip){
+   if((obj.value != null && obj.value != "") && !isNumber(obj.value)){
+        alert(tip+"必须是正整数！");
+        return false;
+   }
+   return true;
+}
+function blurCheckIsTwoScaleNumber(obj,tip){
+    if(!checkIsTwoScaleNumber(obj.value)){
+        obj.focus();
+    }
+}
+function checkIsTwoScaleNumber(val,tip){
+    if((obj.value != null && obj.value != "") && !isTowScaleNumber(obj.value)){
+        alert(tip+"必须是两位以内的小数！");
+        return false;
+    }
+    return true;
+}
+function isNumber(obj){
+    var reg = new RegExp("^[1-9][0-9]*$");
+    return reg.test(obj);
+}
+
+function isTowScaleNumber(obj) {
+    if(obj == null || obj == ""){
+        return true;
+    }
+    var reg = new RegExp("^[0-9]+(\.[0-9]{0,2})?$");
+    return reg.test(obj);
+}
+function checkLength(val,limit,tip){
+    if(obj == null){
+        return true;
+    }
+    if(obj.length > limit){
+        alert(tip+"不能超过"+limit+"个字符！");
+        return false;
+    }
+    return true;
+}
+function isEmpty(val,tip){
+    if(val == null || val == ""){
+        alert(tip+"不能为空！");
+        return false;
+    }
+    return true;
+}

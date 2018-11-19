@@ -1,0 +1,24 @@
+package #basePackage#.service;
+
+import java.util.List;
+
+import  #basePackage#.model.#className#;
+import  #basePackage#.vo.#className#Vo;
+
+
+
+public interface #className#Service{
+    List<#className#Vo> get#className#ListForPage(#className#Vo #alias#);
+
+    Integer get#className#ListCount(#className#Vo #alias#);
+
+    #className#Vo get#className#ById(Long id);
+
+    void insert#className#(#className#Vo #alias#);
+
+    void update#className#(#className#Vo #alias#);
+
+    #className#Vo getActivityConfigByIdForPage(Long id);
+}
+
+

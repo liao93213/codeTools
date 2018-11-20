@@ -69,7 +69,7 @@ public class ParseTableForOracle {
             String colType = rs.getString("data_type");
             String colComment = rs.getString("column_comment");
             int isNullable = rs.getBoolean("is_nullable") ? NullableEnum.YES.getValue() : NullableEnum.NO.getValue();
-            String camelColName = NameUtils.underline2Camel(colName);//转成驼峰命名
+            String camelColName = NameUtils.underline2Camel(colName.toLowerCase());//转成驼峰命名
             String colJavaType = CommonUtils.sqlTypeToJavaType(colType);
             Column col = new Column();
             col.setColName(colName);

@@ -19,9 +19,9 @@ public class NameUtils {
         }
 
         String[] codes = line.split("_");
-        String result = codes[0].toLowerCase();
+        String result = codes[0];
         for(int i = 1;i < codes.length;i++){
-            result+=codes[i].substring(0,1).toUpperCase() + codes[i].substring(1).toLowerCase();
+            result+=codes[i].substring(0,1).toUpperCase() + codes[i].substring(1);
         }
         return result;
     }

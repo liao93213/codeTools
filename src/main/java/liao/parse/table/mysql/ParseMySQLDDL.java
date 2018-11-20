@@ -32,8 +32,8 @@ public class ParseMySQLDDL {
             if(line.trim().equals("the end")){
                 break;
             }
-
         }
+        sc.close();
         List<AbstractCodeGenerator> generatorList = RegistrationFactory.getGeneratorList();
         for(Table table : tableList) {
             for (AbstractCodeGenerator classGenerator : generatorList) {

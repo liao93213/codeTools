@@ -15,7 +15,7 @@
     </properties>
 
     <build>
-        <finalName>codeGenerator</finalName>
+        <finalName>codeTools</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

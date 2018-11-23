@@ -7,7 +7,7 @@
         #selectSQL#
         WHERE 1=1
         <include refid="queryCondition"/>
-        limit #{startNum},#{pageCount}
+        limit #{startNum},#{pageSize}
     </select>
     <select id="get#className#ListCount" parameterType="#basePackage#.vo.#className#Vo" resultType="java.lang.Integer">
          select count(1)
@@ -25,4 +25,4 @@
     <update id="update#className#" parameterType="#basePackage#.vo.#className#Vo">
         #updateSQL#
     </update>
-</sqlMap>
+</mapper>

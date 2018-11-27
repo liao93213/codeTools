@@ -51,7 +51,7 @@ public class ParseMySQLDDL {
                 columnList.add(getOneColumn(oneLine,tableName));
             }
             if(oneLine.substring(0,1).equals(")")){
-                String comment = getComment(oneLine);
+                String comment = getComment(oneLine,false);
                 comment = comment.replaceAll("表$","");
                 table.setComment(comment);
             }
@@ -63,7 +63,7 @@ public class ParseMySQLDDL {
         String[] eles = oneLine.split(" ");
         String colName = eles[0];
         String colType = eles[1];
-        String colComment = eles[eles.length-1];
+        String colComment = getComment(oneLine,true);
         String camelColName = NameUtils.underline2Camel(colName);//转成驼峰命名
         String colJavaType = CommonUtils.sqlTypeToJavaType(colType);
         Column col = new Column();
@@ -76,12 +76,16 @@ public class ParseMySQLDDL {
         return col;
     }
 
-    private static String getComment(String line){
+    private static String getComment(String line,boolean isRow){
         line = line.replaceAll("`|'|,|;","");
         String[] eles = line.split(" ");
         for(int i = 0;i < eles.length; i++) {
             if(eles[i].toLowerCase().startsWith("comment")){
-                return eles[i].split("=")[1];
+                if(isRow){
+                    return eles[i+1];
+                }else {
+                    return eles[i].split("=")[1];
+                }
             }
         }
         return "";

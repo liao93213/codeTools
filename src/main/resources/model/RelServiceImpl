@@ -1,0 +1,57 @@
+package #basePackage#.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import #basePackage#.model.#className#;
+import #basePackage#.vo.#className#Vo;
+import #basePackage#.dao.#className#Dao;
+import #basePackage#.service.#className#Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Service
+public class #className#ServiceImpl implements #className#Service{
+
+    @Autowired
+    private #className#Dao #alias#Dao;
+    @Override
+    public List<#className#Vo> get#className#By#ParentId#Id(Long #parentId#Id) {
+        return #alias#Dao.get#className#By#ParentId#Id(#parentId#Id);
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
+    public void update(List<#className#Vo> #alias#List,long #parentId#Id) {
+        deleteBy#ParentId#Id(#parentId#Id);
+        batchInsert(#alias#List,#parentId#Id);
+    }
+
+    public void batchInsert(List<#className#Vo> #alias#List,long #parentId#Id) {
+        if(#alias#List == null || #alias#List.isEmpty()){
+            return;
+        }
+        for(#className#Vo #alias# : #alias#List){
+            #alias#.set#ParentId#Id(#ParentId#Id);
+            #alias#Dao.insert(couponRulePermissionRel);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
+    public void deleteBy#ParentId#Id(long #parentId#Id) {
+        #alias#Dao.deleteBy#ParentId#Id(#parentId#Id);
+    }
+
+    @Override
+    public List<#className#Vo> get#className#ByRuleIdList(List<Long> idList) {
+        if(idList.isEmpty()){
+            return new ArrayList<>();
+        }
+        return #alias#Dao.get#className#ByRuleIdList(idList);
+    }
+}

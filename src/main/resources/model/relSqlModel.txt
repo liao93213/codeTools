@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="#basePackage#.dao.#className#Dao">
+    <select id="get#className##parentId#Id" parameterType="Long"
+            resultType="#basePackage#.vo.#className#Vo">
+        #selectSQL#
+        WHERE t.#parentId#_id=#{#parentId#Id}
+    </select>
+    <select id="get#className##parentId#IdList" parameterType="java.util.List"
+            resultType="#basePackage#.vo.#className#Vo">
+        #selectSQL#
+        WHERE #parentId#_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insert#className#" parameterType="#basePackage#.vo.#className#Vo">
+        #insertSQL#
+    </insert>
+    <update id="deleteBy#parentId#Id" parameterType="Long">
+        #deleteSQL#
+    </update>
+</mapper>

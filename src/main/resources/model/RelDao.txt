@@ -1,0 +1,17 @@
+package #basePackage#.dao;
+
+import java.util.List;
+import  #basePackage#.model.#className#;
+import  #basePackage#.vo.#className#Vo;
+
+
+interface #className#Dao{
+    List<#className#Vo> get#className#By#ParentId#Id(Long #parentId#Id);
+    
+
+    void deleteBy#ParentId#Id(long #parentId#Id);
+
+    List<#className#Vo> get#className#ByRuleIdList(List<Long> idList);
+
+    void batchInsert(List<#className#Vo> #alias#List,long #parentId#Id);
+}

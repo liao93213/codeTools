@@ -1,0 +1,6 @@
+.notEmpty {}
+/**一组只需要写一次,必须有name属性*/
+.needChecked {}
+.needNoZeroInt {}
+.needTowScale {}
+.notZero {}

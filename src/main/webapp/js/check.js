@@ -13,7 +13,7 @@ Check.prototype = {
     },
     checkForm: function () {
         /**
-         * 避免
+         * 确保都执行
          */
         var result = this.notEmptyCheck();
         result = this.needIntCheck() && result;
@@ -58,7 +58,7 @@ Check.prototype = {
         return result;
     },
     needIntCheck: function () {
-        var needIntList = document.getElementsByClassName("needNoZeroInt");
+        var needIntList = document.getElementsByClassName("int");
         if (needIntList == null || needIntList.length == 0) {
             return true;
         }
@@ -71,15 +71,15 @@ Check.prototype = {
         }
         return result;
     },
-    notZeroCheck: function () {
-        var notZeroList = document.getElementsByClassName("notZero");
-        if (notZeroList == null || notZeroList.length == 0) {
+    naturalIntCheck: function () {
+        var naturalIntList = document.getElementsByClassName("naturalInt");
+        if (naturalIntList == null || naturalIntList.length == 0) {
             return true;
         }
         var result = true;
-        for (var i = 0; i < notZeroList.length; i++) {
-            if (notZeroList[i].value != null && !this.validateNoZeroInt(notZeroList[i].value)) {
-                this.formatError(notZeroList[i]);
+        for (var i = 0; i < naturalIntList.length; i++) {
+            if (naturalIntList[i].value != null && 0 == this.validateNaturalInt(naturalIntList[i].value)) {
+                this.formatError(naturalIntList[i]);
                 result = false;
             }
         }
@@ -87,13 +87,29 @@ Check.prototype = {
     },
 
     towScaleCheck: function () {
-        var towScaleList = document.getElementsByClassName("needChecked");
+        var towScaleList = document.getElementsByClassName("needTowScale");
         if (towScaleList == null || towScaleList.length == 0) {
             return true;
         }
         var result = true;
         for (var i = 0; i < towScaleList.length; i++) {
             if (towScaleList[i].value != null && !this.validateTowScale(towScaleList[i].value)) {
+                this.formatError(towScaleList[i]);
+                result = false;
+            }
+        }
+        return result;
+    },
+
+    positiveTowScaleCheck: function () {
+        var positiveTowScaleList = document.getElementsByClassName("positiveTowScale");
+        if (positiveTowScaleList == null || positiveTowScaleList.length == 0) {
+            return true;
+        }
+        var result = true;
+        for (var i = 0; i < positiveTowScaleList.length; i++) {
+            if (positiveTowScaleList[i].value != null && !this.validatePositiveTowScale(positiveTowScaleList[i].value)) {
+                this.formatError(positiveTowScaleList[i]);
                 result = false;
             }
         }
@@ -121,6 +137,10 @@ Check.prototype = {
         alert(errorMessage);
     },
 
+    baisValidate: function(list,validateFun){
+
+    }
+
     /**
      * 验证整数
      *
@@ -136,12 +156,26 @@ Check.prototype = {
     },
 
     /**
+     * 验证自然数
+     *
+     * @param value        输入的数值
+     * @returns
+     */
+    validateNaturalInt: function (value) {
+        if (value === undefined || value === null) {
+            return false;
+        }
+        var reg = new RegExp("^[0-9]+$");
+        return reg.test(value);
+    },
+
+    /**
      * 验证正整数
      *
      * @param value        输入的数值
      * @returns
      */
-    validateNoZeroInt: function (value) {
+    validatePositiveInt: function (value) {
         if (value === undefined || value === null) {
             return false;
         }
@@ -159,8 +193,31 @@ Check.prototype = {
         if (value === undefined || value === null) {
             return false;
         }
+        var reg = new RegExp("^-?[0-9]+\.?[0-9]{0,2}")
+        return reg.test(value);
+    },
+
+    /**
+     * 自然金额验证
+     *
+     * @param value        输入的数值
+     * @returns
+     */
+    validateNaturalTowScale: function (value) {
+        if (value === undefined || value === null) {
+            return false;
+        }
         var reg = new RegExp("^[0-9]+\.?[0-9]{0,2}")
         return reg.test(value);
+    },
+    /**
+     * 正金额验证
+     *
+     * @param value        输入的数值
+     * @returns
+     */
+    validatePositiveTowScale: function (value) {
+        return this.validateNaturalTowScale(value) && parseFloat(value) > 0;
     }
 }
 

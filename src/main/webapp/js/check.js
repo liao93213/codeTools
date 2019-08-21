@@ -15,30 +15,23 @@ Check.prototype = {
         /**
          * 确保都执行
          */
-        var result = this.notEmptyCheck();
-        result = this.needIntCheck() && result;
-        result = this.notZeroCheck() && result;
+        var result = this.requiredCheck();
+        result = this.intCheck() && result;
+        result = this.naturalIntCheck() && result;
+        result = this.positiveIntCheck() && result;
+        result = this.checkedCheck() && result;
         result = this.towScaleCheck() && result;
-        result = this.needCheckedCheck() && result;
+        result = this.naturalTowScaleCheck() && result;
+        result = this.positiveTowScaleCheck() && result;
         this.showErrorTipList();
         return result;
     },
-    notEmptyCheck: function () {
-        var notEmptyList = document.getElementsByClassName("notEmpty");
-        if (notEmptyList == null || notEmptyList.length == 0) {
-            return true;
-        }
-        var result = true;
-        for (var i = 0; i < notEmptyList.length; i++) {
-            if (notEmptyList[i].value == null || notEmptyList[i].value.trim().length == 0) {
-                this.formatError(notEmptyList[i]);
-                result = false;
-            }
-        }
-        return result;
+    requiredCheck: function () {
+        var notEmptyList = document.getElementsByClassName("required");
+        return this.basicsValidate.call(this, notEmptyList, this.notEmpty);
     },
-    needCheckedCheck: function () {
-        var needCheckedList = document.getElementsByClassName("needChecked");
+    checkedCheck: function () {
+        var needCheckedList = document.getElementsByClassName("checked");
         if (needCheckedList == null || needCheckedList.length == 0) {
             return true;
         }
@@ -57,63 +50,32 @@ Check.prototype = {
         }
         return result;
     },
-    needIntCheck: function () {
+    intCheck: function () {
         var needIntList = document.getElementsByClassName("int");
-        if (needIntList == null || needIntList.length == 0) {
-            return true;
-        }
-        var result = true;
-        for (var i = 0; i < needIntList.length; i++) {
-            if (needIntList[i].value != null && !this.validateInt(needIntList[i].value)) {
-                this.formatError(needIntList[i]);
-                result = false;
-            }
-        }
-        return result;
+        return this.basicsValidate.call(this, needIntList, this.validateInt);
     },
     naturalIntCheck: function () {
-        var naturalIntList = document.getElementsByClassName("naturalInt");
-        if (naturalIntList == null || naturalIntList.length == 0) {
-            return true;
-        }
-        var result = true;
-        for (var i = 0; i < naturalIntList.length; i++) {
-            if (naturalIntList[i].value != null && 0 == this.validateNaturalInt(naturalIntList[i].value)) {
-                this.formatError(naturalIntList[i]);
-                result = false;
-            }
-        }
-        return result;
+        var needIntList = document.getElementsByClassName("naturalInt");
+        return this.basicsValidate.call(this, needIntList, this.validateNaturalInt);
+    },
+    positiveIntCheck: function () {
+        var naturalIntList = document.getElementsByClassName("positiveInt");
+        return this.basicsValidate.call(this, naturalIntList, this.validatePositiveInt);
     },
 
     towScaleCheck: function () {
-        var towScaleList = document.getElementsByClassName("needTowScale");
-        if (towScaleList == null || towScaleList.length == 0) {
-            return true;
-        }
-        var result = true;
-        for (var i = 0; i < towScaleList.length; i++) {
-            if (towScaleList[i].value != null && !this.validateTowScale(towScaleList[i].value)) {
-                this.formatError(towScaleList[i]);
-                result = false;
-            }
-        }
-        return result;
+        var towScaleList = document.getElementsByClassName("towScale");
+        return this.basicsValidate.call(this, towScaleList, this.validateTowScale);
+    },
+
+    naturalTowScaleCheck: function () {
+        var towScaleList = document.getElementsByClassName("naturalTowScale");
+        return this.basicsValidate.call(this, towScaleList, this.validateNaturalTowScale);
     },
 
     positiveTowScaleCheck: function () {
         var positiveTowScaleList = document.getElementsByClassName("positiveTowScale");
-        if (positiveTowScaleList == null || positiveTowScaleList.length == 0) {
-            return true;
-        }
-        var result = true;
-        for (var i = 0; i < positiveTowScaleList.length; i++) {
-            if (positiveTowScaleList[i].value != null && !this.validatePositiveTowScale(positiveTowScaleList[i].value)) {
-                this.formatError(positiveTowScaleList[i]);
-                result = false;
-            }
-        }
-        return result;
+        return this.basicsValidate.call(this, positiveTowScaleList, this.validatePositiveTowScale);
     },
     formatError: function (obj) {
         var isContain = false;
@@ -137,9 +99,22 @@ Check.prototype = {
         alert(errorMessage);
     },
 
-    baisValidate: function(list,validateFun){
-
-    }
+    basicsValidate: function (list, validateFun) {
+        if (list == null || list.length == 0) {
+            return true;
+        }
+        var result = true;
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].value != null && !validateFun.call(this, list[i].value)) {
+                this.formatError(list[i]);
+                result = false;
+            }
+        }
+        return result;
+    },
+    notEmpty: function (value) {
+        return (value != null && value.trim().length != 0);
+    },
 
     /**
      * 验证整数
@@ -193,7 +168,7 @@ Check.prototype = {
         if (value === undefined || value === null) {
             return false;
         }
-        var reg = new RegExp("^-?[0-9]+\.?[0-9]{0,2}")
+        var reg = new RegExp("^-?[0-9]+\.?[0-9]{0,2}$")
         return reg.test(value);
     },
 
@@ -207,7 +182,7 @@ Check.prototype = {
         if (value === undefined || value === null) {
             return false;
         }
-        var reg = new RegExp("^[0-9]+\.?[0-9]{0,2}")
+        var reg = new RegExp("^[0-9]+\.?[0-9]{0,2}$")
         return reg.test(value);
     },
     /**
@@ -217,7 +192,7 @@ Check.prototype = {
      * @returns
      */
     validatePositiveTowScale: function (value) {
-        return this.validateNaturalTowScale(value) && parseFloat(value) > 0;
+        return this.validateNaturalTowScale.call(this, value) && parseFloat(value) > 0;
     }
 }
 

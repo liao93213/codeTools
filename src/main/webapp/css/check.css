@@ -1,6 +1,15 @@
-.notEmpty {}
+/**必填*/
+.required {}
 /**一组只需要写一次,必须有name属性*/
-.needChecked {}
-.needNoZeroInt {}
-.needTowScale {}
-.notZero {}
+.checked {}
+.int {}
+.naturalInt {}
+/**自然数*/
+.positiveInt {}
+/**最多两位小数*/
+.towScale {}
+/**非负数两位小数*/
+.naturalTowScale {}
+/**正两位小数*/
+.positiveTowScale {}
+

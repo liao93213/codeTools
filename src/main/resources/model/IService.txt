@@ -8,7 +8,7 @@ import  #basePackage#.vo.#className#Vo;
 
 
 public interface #className#Service{
-    List<#className#Vo> get#className#ListForPage(#className#Vo #alias#);
+    List<#className#> get#className#ListForPage(#className#Vo #alias#);
 
     Integer get#className#ListCount(#className#Vo #alias#);
 

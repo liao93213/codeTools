@@ -9,6 +9,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv ="X-UA-Compatible" content ="IE=edge">
     <link rel="stylesheet" type="text/css" href="${basePath}/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="${basePath}/css/check.css"/>
+
 <%--
     <link rel="stylesheet" type="text/css" href="${basePath}/js/plugin/search/search.css"/>
 --%>
@@ -16,6 +18,7 @@
     <script src="${basePath}/js/common.js"></script>
     <script src="${basePath}/js/pageInfo.js"></script>
     <script src="${basePath}/js/search.js"></script>
+    <script src="${basePath}/js/check.js"></script>
 
 <%--
     <script src="${basePath}/js/plugin/search/search.js"></script>
@@ -36,7 +39,7 @@
             <label class="control-inline"><font color=red>*</font>原型地址：</label>
         </td>
         <td width="80%" align="left" bgcolor="#FFFFFF">
-            <input type="text" id="htmlPath" maxlength="500" size="120" value="C:\Users\ao\Desktop\html.html">
+            <input type="text" id="htmlPath" maxlength="500" size="120" value="C:\Users\ao\Desktop\html.html" class="required positiveTowScale naturalTowScale towScale" errorMessage="towScale">
         </td>
     </tr>
     <tr>
@@ -44,7 +47,7 @@
             <label class="control-inline"><font color=red>*</font>名称前缀字符：</label>
         </td>
         <td width="80%" align="left" bgcolor="#FFFFFF">
-            <input type="text" id="ingoreChar" maxlength="500" size="120">
+            <input type="text" id="ingoreChar" maxlength="500" size="120" class="required int naturalInt positiveInt" errorMessage="名称前缀字符 positiveInt">
         </td>
     </tr>
     <tr>
@@ -56,6 +59,10 @@
                 <option value="1">是</option>
                 <option value="0">否</option>
             </select>
+            <input type="checkbox" name="youknow" class="checked" errorMessage="checkbox need check">A
+            <input type="checkbox" name="youknow">B
+            <input type="radio" name="radio" class="checked" errorMessage="radio need check">A
+            <input type="radio" name="radio">B
         </td>
     </tr>
 </table>

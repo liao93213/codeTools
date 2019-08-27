@@ -23,12 +23,4 @@ public class ServiceClassGenerator  extends AbstractClassGenerator{
     protected String getFileName(Table table) {
         return "service"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Service.java";
     }
-
-    public static class ServiceFactory implements Factory<ServiceClassGenerator> {
-
-        @Override
-        public ServiceClassGenerator create() {
-            return new ServiceClassGenerator();
-        }
-    }
 }

@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="#basePackage#.dao.#className#Dao">
+<mapper namespace="#basePackage#.dao.api.#className#Dao">
+    <resultMap id="#className#ResultMap" type="#basePackage#.domain.#className#DO">
+        #resultMap#
+    </resultMap>
     <sql id="queryCondition">
     </sql>
-    <select id="get#className#ListForPage" parameterType="#basePackage#.vo.#className#Vo" resultType="#className#Vo">
+    <select id="get#className#ListForPage" parameterType="#basePackage#.domain.example.#className#Example" resultType="#className#DO">
         #selectSQL#
         WHERE 1=1
         <include refid="queryCondition"/>
-        limit #{startNum},#{pageSize}
+        limit #{offset},#{rows}
     </select>
-    <select id="get#className#ListCount" parameterType="#basePackage#.vo.#className#Vo" resultType="java.lang.Integer">
+    <select id="get#className#ListCount" parameterType="#basePackage#.domain.example.#className#Example" resultType="java.lang.Integer">
          select count(1)
             from #tableName#
             WHERE 1=1
          <include refid="queryCondition"/>
     </select>
-    <select id="get#className#ById" parameterType="Long" resultType="#basePackage#.vo.#className#Vo">
+    <select id="get#className#ById" parameterType="Long" resultType="#basePackage#.domain.example.#className#DO">
         #selectSQL#
         WHERE id=#{id}
     </select>
-    <insert id="insert#className#" parameterType="#basePackage#.vo.#className#Vo">
+    <insert id="insert#className#" parameterType="#basePackage#.domain.example.#className#Domain">
         #insertSQL#
     </insert>
-    <update id="update#className#" parameterType="#basePackage#.vo.#className#Vo">
+    <update id="update#className#" parameterType="#basePackage#.domain.example.#className#Domain">
         #updateSQL#
     </update>
+     <delete id="delete#className#" parameterType="#basePackage#.domain.example.#className#Domain">
+            #deleteSQL#
+     </update>
 </mapper>

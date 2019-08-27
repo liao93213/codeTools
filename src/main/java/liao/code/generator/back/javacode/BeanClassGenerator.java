@@ -52,10 +52,4 @@ public class BeanClassGenerator extends AbstractClassGenerator {
         return CONFIG_FILE;
     }
 
-    public static class BeanFactory implements Factory<BeanClassGenerator> {
-        @Override
-        public BeanClassGenerator create() {
-            return new BeanClassGenerator();
-        }
-    }
 }

@@ -21,6 +21,7 @@ public class ReaderUtils {
     public static String readAllModelLines(String path) throws IOException {
         StringBuilder modelText = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(ReaderUtils.class.getClassLoader().getResourceAsStream(path)))) {
+            System.out.println(path);
             String line = null;
             while((line = reader.readLine()) != null){
                 modelText.append(line + System.lineSeparator());

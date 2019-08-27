@@ -1,0 +1,16 @@
+package #basePackage#.manager.impl;
+
+import java.util.List;
+
+import  #basePackage#.#className#DO;
+
+
+/**
+ * #tableComment#
+ */
+ @Service
+public class #className#Manager implements #className#Manager{
+
+}
+
+

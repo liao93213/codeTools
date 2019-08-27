@@ -13,7 +13,7 @@ public class RegistrationFactory {
     public static List<AbstractCodeGenerator> getGeneratorList(){
         List<AbstractCodeGenerator> resultList = new ArrayList<>();
         for(GeneratorTypeEnum type : GeneratorTypeEnum.values()){
-            resultList.add(type.getFactory().create());
+            resultList.add(type.getGenerator());
         }
         return resultList;
     }

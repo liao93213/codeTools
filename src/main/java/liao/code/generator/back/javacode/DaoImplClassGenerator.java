@@ -23,11 +23,4 @@ public class DaoImplClassGenerator  extends AbstractClassGenerator {
     protected String getFileName(Table table) {
         return "dao"+ File.separator+"impl"+ File.separator+NameUtils.getClassName(table.getTableName())+"DaoImpl.java";
     }
-
-    public static class DaoImplFactory implements Factory<DaoImplClassGenerator> {
-        @Override
-        public DaoImplClassGenerator create() {
-            return new DaoImplClassGenerator();
-        }
-    }
 }

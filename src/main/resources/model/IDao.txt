@@ -4,7 +4,9 @@ import java.util.List;
 import  #basePackage#.model.#className#;
 import  #basePackage#.vo.#className#Vo;
 
-
+/**
+ * #tableComment#
+ */
 public interface #className#Dao{
     List<#className#Vo> get#className#ListForPage(#className#Vo #alias#);
 

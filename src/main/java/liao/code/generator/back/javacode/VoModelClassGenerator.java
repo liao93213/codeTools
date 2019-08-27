@@ -23,11 +23,4 @@ public class VoModelClassGenerator extends AbstractClassGenerator{
     protected String getFileName(Table table) {
         return "vo" + File.separator + NameUtils.getClassName(table.getTableName()) + "Vo.java";
     }
-    public static class VoFactory implements Factory<VoModelClassGenerator> {
-
-        @Override
-        public VoModelClassGenerator create() {
-            return new VoModelClassGenerator();
-        }
-    }
 }

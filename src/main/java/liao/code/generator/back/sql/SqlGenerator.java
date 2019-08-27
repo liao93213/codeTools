@@ -22,20 +22,30 @@ public class SqlGenerator extends AbstractCodeGenerator {
         String selectSql = createSelectSql(table);
         String insertSql = createInsertSql(table);
         String updateSql = createUpdateSql(table);
+        String resultMap = createResultMap(table);
         model = model.replace("#tableName#", table.getTableName());
         model = model.replace("#selectSQL#", selectSql);
         model = model.replace("#insertSQL#", insertSql);
+        model = model.replace("#resultMap#",resultMap);
         return model.replace("#updateSQL#", updateSql);
     }
 
     public String createSelectSql(Table table) {
         StringBuilder sql = new StringBuilder("SELECT" + System.lineSeparator());
         for (Column col : table.getColumnList()) {
-            sql.append("            t." + col.getColName() + " AS " + col.getCamelColName() + "," + System.lineSeparator());
+            sql.append("            t." + col.getColName() + "," + System.lineSeparator());
         }
         sql = removeLastChar(sql, ",");
         sql.append(System.lineSeparator());
         sql.append("        FROM " + table.getTableName() + " t" + System.lineSeparator());
+        return sql.toString();
+    }
+
+    public String createResultMap(Table table) {
+        StringBuilder sql = new StringBuilder();
+        for (Column col : table.getColumnList()) {
+            sql.append("        <result property=\""+col.getCamelColName()+"\" column=\""+col.getColName()+"\"/>");
+        }
         return sql.toString();
     }
 
@@ -48,7 +58,8 @@ public class SqlGenerator extends AbstractCodeGenerator {
         sql.append(")" + System.lineSeparator());
         sql.append("        VALUES(" + System.lineSeparator());
         for (Column col : table.getColumnList()) {
-            sql.append("            #{" + col.getCamelColName() + "," + getJdbcType(col.getColDBType()) + "}," + System.lineSeparator());
+            sql.append("            #{" + col.getCamelColName() + "}," + System.lineSeparator());
+
         }
         sql = removeLastChar(sql, ",");
         sql.append(")");
@@ -72,7 +83,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
     public String createUpdateSql(Table table) {
         StringBuilder sql = new StringBuilder("UPDATE " + table.getTableName() + " SET" + System.lineSeparator());
         for (Column col : table.getColumnList()) {
-            sql.append("            " + col.getColName() + "=#{" + col.getCamelColName() + "," + getJdbcType(col.getColDBType()) + "}," + System.lineSeparator());
+            sql.append("            " + col.getColName() + "=#{" + col.getCamelColName() + "}," + System.lineSeparator());
         }
         sql = removeLastChar(sql, ",");
         sql.append(System.lineSeparator());
@@ -85,18 +96,11 @@ public class SqlGenerator extends AbstractCodeGenerator {
     }
 
     public String getFileName(Table table) {
-        return "sql" + File.separator + NameUtils.underline2Camel(table.getTableName().replace(PropertyUtils.getConfig("config").getProperty("tablePre"), "")) + "_sql.xml";
+        return "sql" + File.separator + NameUtils.underline2Camel(table.getTableName().replace(PropertyUtils.getConfig("config").getProperty("tablePre"), "")) + "Mapper.xml";
     }
 
     @Override
     protected String getConfFile() {
         return CONFIG_FILE;
-    }
-
-    public static class SqlFactory implements Factory<SqlGenerator> {
-        @Override
-        public SqlGenerator create() {
-            return new SqlGenerator();
-        }
     }
 }

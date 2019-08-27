@@ -21,13 +21,6 @@ public class DaoClassGenerator extends AbstractClassGenerator {
 
     @Override
     protected String getFileName(Table table) {
-        return "dao"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Dao.java";
-    }
-
-    public static class DaoFactory implements Factory<DaoClassGenerator> {
-        @Override
-        public DaoClassGenerator create() {
-            return new DaoClassGenerator();
-        }
+        return "dao"+ File.separator + "api" +NameUtils.getClassName(table.getTableName())+"Dao.java";
     }
 }

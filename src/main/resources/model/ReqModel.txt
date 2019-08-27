@@ -7,6 +7,6 @@ import java.util.Date;
 /**
  * #tableComment#
  */
-public class #className#Req extends QueryCond implements Serializable {
+public class #className#Req implements Serializable {
 #content#
 }

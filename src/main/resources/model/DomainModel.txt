@@ -1,0 +1,16 @@
+package #basePackage#.model;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+/**
+ * #tableComment#
+ */
+public class #className#Domain{
+    public List<#className#Result> get#className#ListForPage(#className#Parameter #alias#){
+            List<#className#DO> resultList = #alias#Dao.get#className#ListForPage(#alias#Parameter);
+            setPageInfo(resultList);
+            return resultList;
+        }
+}

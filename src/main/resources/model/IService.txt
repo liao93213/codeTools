@@ -1,25 +1,24 @@
 package #basePackage#.service.api;
 
+import #basePackage#.domain.params.#className#Parameter;
+import #basePackage#.domain.po.#className#PO;
+import #basePackage#.domain.result.#className#Result;
+
 import java.util.List;
-
-import  #basePackage#.#className#Result;
-
 
 /**
  * #tableComment#
  */
-public interface #className#Service{
+public interface #className#Service {
     List<#className#Result> get#className#ListForPage(#className#Parameter #alias#Parameter);
 
     Integer get#className#ListCount(#className#Parameter #alias#Parameter);
 
     #className#Result get#className#ById(Long id);
 
-    Integer save#className#(#className#Parameter #alias#Parameter);
+    int insert#className#(#className#Parameter #alias#Parameter);
 
-    Integer update#className#(#className#Parameter #alias#Parameter);
+    int update#className#(#className#Parameter #alias#Parameter);
 
-    Integer delete#className#(#className#Parameter #alias#Parameter);
+    void saveAll#className#(List<#className#Parameter> #alias#ParameterList);
 }
-
-

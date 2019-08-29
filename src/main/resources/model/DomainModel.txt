@@ -1,17 +1,18 @@
+ackage #basePackage#.domain;
 
-import com.nicetuan.basic.common.bean.BaseBean;
-import com.nicetuan.basic.common.bean.DomainBean;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import com.nicetuan.basic.common.bean.BaseBean;
+import com.nicetuan.basic.common.bean.DomainBean;
+
 import java.util.Date;
+
 /**
  * #tableComment#
  */
 @Getter
 @Setter
-public class #className#  extends BaseBean implements DomainBean{
+public class #className# extends BaseBean implements DomainBean{
 #content#
 }

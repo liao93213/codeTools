@@ -1,17 +1,15 @@
+package #basePackage#.domain.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
-import com.nicetuan.basic.common.bean.DomainBean;
 import com.nicetuan.basic.common.bean.PagedParameter;
 /**
  * #tableComment#
  */
 @Getter
 @Setter
-public class #className#Request extends PagedParameter implements DomainBean{
+public class #className#Request extends PagedParameter{
 #content#
 }

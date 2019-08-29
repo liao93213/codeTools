@@ -1,61 +1,53 @@
 package #basePackage#.service.impl;
 
-import java.util.List;
-
+import #basePackage#.domain.convert.#className#Convert;
+import #basePackage#.domain.params.#className#Parameter;
+import #basePackage#.domain.po.#className#PO;
+import #basePackage#.domain.result.#className#Result;
+import #basePackage#.manager.api.#className#Manager;
+import #basePackage#.service.api.#className#Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import  #basePackage#.domain.do.#className#DO;
-import  #basePackage#.domain.parameter.#className#Parameter;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.List;
 
 /**
  * #tableComment#
  */
 @Service
-public class #className#ServiceImpl implements #className#Service{
-
-	private static final Logger logger = LoggerFactory.getLogger(#className#ServiceImpl.class);
-
+public class #className#ServiceImpl implements #className#Service {
     @Autowired
     private #className#Manager #alias#Manager;
-
-    public List<#className#Result> get#className#ListForPage(#className#Parameter #alias#){
-        List<#className#DO> resultList = #alias#Manager.get#className#ListForPage(#alias#Parameter);
-        setPageInfo(resultList);
-        return resultList;
+    @Override
+    public List<#className#Result> get#className#ListForPage(#className#Parameter #alias#Parameter) {
+        List<#className#PO> #alias#POList = #alias#Manager.get#className#ListForPage(#alias#Parameter);
+        return #className#Convert.poToResultList(#alias#POList);
     }
 
-    private void setPageInfo(List<#className#DO> resultList){
-
-    }
-
-    public Integer get#className#ListCount(#className#Parameter #alias#Parameter){
+    @Override
+    public Integer get#className#ListCount(#className#Parameter #alias#Parameter) {
         return #alias#Manager.get#className#ListCount(#alias#Parameter);
     }
 
-    public #className#Result get#className#ById(Long id){
-        #className#DO result = #alias#Manager.get#className#ById(id);
-        return result;
+    @Override
+    public #className#Result get#className#ById(Long id) {
+        #className#PO #alias#PO = #alias#Manager.get#className#ById(id);
+        return #className#Convert.poToResult(#alias#PO);
     }
 
-    public #className#Result get#className#ByIdForPage(Long id){
-        #className#Vo result = #alias#Manager.get#className#ById(id);;
-        setPageInfo(result);
-        return result;
+    @Override
+    public int insert#className#(#className#Parameter #alias#Parameter) {
+        return #alias#Manager.insert#className#(#alias#Parameter);
     }
 
-    private void setPageInfo(#className#DO #alias#DO){
-
-    }
-    public void insert#className#(#className#Parameter #alias#Parameter){
-        #alias#Manager.insert#className#(#alias#Parameter);
+    @Override
+    public int update#className#(#className#Parameter #alias#Parameter) {
+        return #alias#Manager.update#className#(#alias#Parameter);
     }
 
-    public void update#className#(#className#Parameter #alias#Parameter){
-        #alias#Manager.update#className#(#alias#Parameter);
+    @Override
+    public void saveAll#className#(List<#className#Parameter> #alias#ParameterList) {
+        #alias#Manager.saveAll#className#(#alias#ParameterList);
     }
 }

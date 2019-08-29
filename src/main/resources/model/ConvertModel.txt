@@ -1,0 +1,92 @@
+package #basePackage#.domain.convert;
+
+import #basePackage#.domain.#className#;
+import #basePackage#.domain.example.#className#Example;
+import #basePackage#.domain.params.#className#Parameter;
+import #basePackage#.domain.po.#className#PO;
+import #basePackage#.domain.request.#className#Request;
+import #basePackage#.domain.response.#className#Response;
+import #basePackage#.domain.result.#className#Result;
+import com.nicetuan.basic.common.bean.util.BeanUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * #tableComment#
+ */
+public class #className#Convert {
+    public static #className#Parameter requestToParameter(#className#Request #alias#Request) {
+        #className#Parameter #alias#Parameter = new #className#Parameter();
+        BeanUtils.copy(#alias#Parameter, #alias#Request);
+        return #alias#Parameter;
+    }
+
+    public static List<#className#Response> resultToResponseList(List<#className#Result> #alias#ResultList) {
+        if (#alias#ResultList == null) {
+            return null;
+        }
+        List<#className#Response> #alias#ResponseList = new ArrayList<>();
+        for (#className#Result #alias#Result : #alias#ResultList) {
+            #alias#ResponseList.add(resultToResponse(#alias#Result));
+        }
+        return #alias#ResponseList;
+    }
+
+    public static #className#Response resultToResponse(#className#Result #alias#Result) {
+        #className#Response #alias#Response = new #className#Response();
+        BeanUtils.copy(#alias#Result, #alias#Response);
+        return #alias#Response;
+    }
+
+    public static #className#Result poToResult(#className#PO #alias#PO) {
+        #className#Result #alias#Result = new #className#Result();
+        BeanUtils.copy(#alias#PO, #alias#Result);
+        return #alias#Result;
+    }
+
+    public static List<#className#Result> poToResultList(List<#className#PO> #alias#POList) {
+        if (#alias#POList == null) {
+            return null;
+        }
+        List<#className#Result> #alias#ResultList = new ArrayList<>();
+        for (#className#PO #alias#PO : #alias#POList) {
+            #alias#ResultList.add(poToResult(#alias#PO));
+        }
+        return #alias#ResultList;
+    }
+
+    public static #className#Example parameterToExample(#className#Parameter #alias#Parameter) {
+        #className#Example #alias#Example = new #className#Example();
+        BeanUtils.copy(#alias#Parameter, #alias#Example);
+        return #alias#Example;
+    }
+
+    public static List<#className#Example> parameterToExampleList(List<#className#Parameter> #alias#ParameterList) {
+        if (#alias#ParameterList == null) {
+            return null;
+        }
+        List<#className#Example> #alias#ExampleList = new ArrayList<>();
+        for (#className#Parameter #alias# : #alias#ParameterList) {
+            #alias#ExampleList.add(parameterToExample(#alias#));
+        }
+        return #alias#ExampleList;
+    }
+
+    public static #className# parameterToDomain(#className#Parameter #alias#Parameter) {
+        #className# #alias# = new #className#();
+        BeanUtils.copy(#alias#Parameter, #alias#);
+        return #alias#;
+    }
+
+    public static List<#className#> parameterToDomainList(List<#className#Parameter> #alias#ParameterList) {
+        if (#alias#ParameterList == null) {
+            return null;
+        }
+        List<#className#> #alias#List = new ArrayList<>();
+        for (#className#Parameter #alias#Parameter : #alias#ParameterList) {
+            #alias#List.add(parameterToDomain(#alias#Parameter));
+        }
+        return #alias#List;
+    }
+}

@@ -1,3 +1,4 @@
+package #basePackage#.domain.po;
 
 import lombok.Getter;
 import lombok.Setter;

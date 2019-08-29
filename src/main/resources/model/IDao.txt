@@ -1,3 +1,4 @@
+package #basePackage#.dao.api;
 
 import java.util.List;
 import  #basePackage#.domain.po.#className#PO;
@@ -8,17 +9,17 @@ import  #basePackage#.domain.#className#;
  * #tableComment#
  */
 public interface #className#Dao{
-    List<#className#PO> get#className#ListForPage(#className#Example #alias#);
+    List<#className#PO> get#className#ListForPage(#className#Example #alias#Example);
 
-    Integer get#className#ListCount(#className#Example #alias#);
+    Integer get#className#ListCount(#className#Example #alias#Example);
 
     #className#PO get#className#ById(Long id);
 
-    void insert#className#(#className#Domain #alias#);
+    int insert#className#(#className# #alias#);
 
-    void update#className#(#className#Domain #alias#);
+    int update#className#(#className# #alias#);
 
-     void saveAll#className#(#className#Domain #alias#);
+    void saveAll#className#(List<#className#> #alias#List);
 }
 
 

@@ -1,18 +1,83 @@
+package #basePackage#.manager.impl;
 
+import #basePackage#.dao.api.#className#Dao;
+import #basePackage#.domain.#className#;
+import #basePackage#.domain.convert.#className#Convert;
+import #basePackage#.domain.example.#className#Example;
+import #basePackage#.domain.params.#className#Parameter;
+import #basePackage#.domain.po.#className#PO;
+import #basePackage#.manager.api.#className#Manager;
+import com.nicetuan.basic.common.bean.util.BeanUtils;
+import com.nicetuan.basic.tool.context.UserContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 import java.util.List;
-
-import  #basePackage#.domain.do.#className#DO;
-import  #basePackage#.domain.do.#className#Example;
-import  #basePackage#.domain.domain.#className#Domain;
-import  #basePackage#.domain.parameter.#className#Parameter;
-
 
 /**
  * #tableComment#
  */
 @Service
-public class #className#Manager implements #className#Manager{
+public class #className#ManagerImpl implements #className#Manager {
+    private static final Logger logger = LoggerFactory.getLogger(#className#ManagerImpl.class);
+    @Autowired
+    private #className#Dao #alias#Dao;
+
+    @Override
+    public List<#className#PO> get#className#ListForPage(#className#Parameter #alias#Parameter) {
+        #className#Example #alias#Example = #className#Convert.parameterToExample(#alias#Parameter);
+        return #alias#Dao.get#className#ListForPage(#alias#Example);
+    }
+
+    @Override
+    public Integer get#className#ListCount(#className#Parameter #alias#Parameter) {
+        #className#Example #alias#Example = #className#Convert.parameterToExample(#alias#Parameter);
+        return #alias#Dao.get#className#ListCount(#alias#Example);
+    }
+
+    @Override
+    public #className#PO get#className#ById(Long configId) {
+        return #alias#Dao.get#className#ById(configId);
+    }
+
+    @Override
+    public int insert#className#(#className#Parameter #alias#Parameter) {
+        logger.info("新增#tableComment#："+#alias#Parameter);
+        #className# #alias# = #className#Convert.parameterToDomain(#alias#Parameter);
+        return #alias#Dao.insert#className#(#alias#);
+    }
+
+    /**
+     * 更新配置
+     * @param #alias#Parameter
+     */
+    @Override
+    public int update#className#(#className#Parameter #alias#Parameter) {
+        logger.info("更新#tableComment#："+#alias#Parameter);
+        #className# #alias# = #className#Convert.parameterToDomain(#alias#Parameter);
+        BeanUtils.copy(#alias#Parameter, #alias#);
+        #alias#.setUpdateUserId(UserContext.getUserId());
+        #alias#.setUpdateUserName(UserContext.getUserName());
+        #alias#.setUpdateTime(new Date());
+        return #alias#Dao.update#className#(#alias#);
+    }
+
+    /**
+     * 批量保存配置
+     * @param #alias#ParameterList
+     */
+    @Override
+    public void saveAll#className#(List<#className#Parameter> #alias#ParameterList) {
+        logger.info("批量新增#tableComment#："+#alias#ParameterList);
+        List<#className#> #alias#List = #className#Convert.parameterToDomainList(#alias#ParameterList);
+        for (#className# #alias# : #alias#List){
+            #alias#.setCreateTime(new Date());
+        }
+        #alias#Dao.saveAll#className#(#alias#List);
+    }
 
 }
-
-

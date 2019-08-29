@@ -1,3 +1,4 @@
+package #basePackage#.domain.result;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,10 +10,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * #tableComment#调用传输类
+ * #tableComment#
  */
 @Getter
 @Setter
-public class #className#Result extends BaseBean implements DtoBean{
+public class #className# Result extends BaseBean implements DtoBean{
 #content#
 }

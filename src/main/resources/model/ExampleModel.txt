@@ -1,6 +1,5 @@
+package #basePackage#.domain.example;
 
-
-import com.nicetuan.basic.common.bean.DomainBean;
 import com.nicetuan.basic.common.bean.PagedParameter;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +12,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class #className#Example extends PagedParameter implements DomainBean{
+public class #className#Example extends PagedParameter{
 #content#
 }

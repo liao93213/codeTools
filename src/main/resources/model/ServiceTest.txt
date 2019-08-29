@@ -1,0 +1,70 @@
+
+import #basePackage#.domain.params.#className#Parameter;
+import #basePackage#.domain.result.#className#Result;
+import #basePackage#.service.api.#className#Service;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.math.BigDecimal;
+import java.util.List;
+
+/**
+ * #tableComment#
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = OfcApplication.class)
+public class #className#ServiceImplTest {
+    @Autowired
+    private #className#Service #alias#Service;
+    @Test
+    public void get#className#ListForPage() {
+        #className#Parameter #alias#Parameter = createTestData1();
+        List<#className#Result> #alias#ResultList = #alias#Service.get#className#ListForPage(#alias#Parameter);
+        System.out.println(#alias#ResultList);
+    }
+
+    @Test
+    public void get#className#ListCount() {
+        #className#Parameter #alias#Parameter = createTestData1();
+        System.out.println(#alias#Service.get#className#ListCount(#alias#Parameter));
+    }
+
+    @Test
+    public void get#className#ById() {
+        #className#Result #alias#Result = #alias#Service.get#className#ById(id);
+        System.out.println(#alias#Result);
+    }
+
+    @Test
+    public void insert#className#() {
+        #className#Parameter #alias#Parameter = createTestData1();
+        System.out.println(#alias#Service.insert#className#(#alias#Parameter));
+    }
+
+    @Test
+    public void update#className#() {
+        #className#Parameter #alias#Parameter = createTestData1();
+        System.out.println(#alias#Service.update#className#(#alias#Parameter));
+    }
+
+    @Test
+    public void saveAll#className#() {
+        List<#className#Parameter> #alias#ParameterList = new ArrayList<#className#Parameter>();
+        #alias#ParameterList.add(createTestData1());
+        #alias#ParameterList.add(createTestData2());
+        #alias#Service.saveAll#className#(#alias#ParameterList);
+    }
+
+    public #className#Parameter createTestData1() {
+#createTestData1#
+    }
+     public #className#Parameter createTestData2() {
+#createTestData2#
+    }
+}

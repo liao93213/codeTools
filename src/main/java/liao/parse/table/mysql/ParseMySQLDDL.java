@@ -29,7 +29,7 @@ public class ParseMySQLDDL {
                 tableList.add(parseDDLSQL(ddlSql));
                 ddlSql = new ArrayList<String>();
             }
-            if(line.trim().equalsIgnoreCase("the end")){
+            if(line.trim().equalsIgnoreCase("##")){
                 break;
             }
         }

@@ -2,6 +2,7 @@ package liao.code.generator.back.factory;
 
 import liao.code.generator.AbstractCodeGenerator;
 import liao.code.generator.back.javacode.*;
+import liao.code.generator.back.javacode.test.ServiceTestClassGenerator;
 import liao.code.generator.back.sql.SqlGenerator;
 
 /**
@@ -21,7 +22,9 @@ public enum GeneratorTypeEnum {
     CONTROLLER(12,new ControllerClassGenerator()),
     SQL(13,new SqlGenerator()),
     MANAGER(14,new MangerClassGenerator()),
-    MANAGER_IMPL(15,new ManagerImplClassGenerator());
+    MANAGER_IMPL(15,new ManagerImplClassGenerator()),
+    COBNVERT(16,new BeanConvertClassGenerator()),
+    SERVICE_TEST(17,new ServiceTestClassGenerator());
     private int type;
     private AbstractCodeGenerator generator;
 

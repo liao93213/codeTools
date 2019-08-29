@@ -1,5 +1,6 @@
 package liao.utils;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -54,6 +55,21 @@ public class CommonUtils {
             return "BigDecimal";
         }
         return sqlType;
+    }
+
+    public static String createNewJavaObject(String javaType, int index) {
+        if (javaType.equals("Long")) {
+            return ""+index+"l";
+        } else if (javaType.equals("Integer")) {
+            return index+"";
+        } else if (javaType.equals("String")) {
+            return "\"x" + index+"\"";
+        } else if (javaType.equals("Date")) {
+            return "new Date()";
+        } else if (javaType.equals("BigDecimal")) {
+            return "new BigDecimal(\""+index + "\")";
+        }
+        throw new IllegalArgumentException("不支持的java类型：" + javaType);
     }
 
     public static<K,V  extends IListToMap<K>> Map<K,V> convertListToMap(List<V> valueList, K k){

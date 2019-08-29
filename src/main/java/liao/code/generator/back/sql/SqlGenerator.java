@@ -29,13 +29,15 @@ public class SqlGenerator extends AbstractCodeGenerator {
         model = model.replace("#resultMap#", resultMap);
         model = model.replace("#columns#", columns);
         model = model.replace("#saveAll#", batchInsert);
+        model = model.replace("#firstColName#",table.getColumnList().get(0).getColName());
+        model = model.replace("#firstColCamelName#",table.getColumnList().get(0).getCamelColName());
         return model.replace("#updateSQL#", updateSql);
     }
 
     public String createSelectSql(Table table) {
         StringBuilder sql = new StringBuilder("SELECT" + System.lineSeparator());
         sql.append("        <include refid=\"columns\"/>" + System.lineSeparator());
-        sql.append("        FROM " + table.getTableName() + " t" + System.lineSeparator());
+        sql.append("        FROM " + table.getTableName() + " t");
         return sql.toString();
     }
 
@@ -53,27 +55,24 @@ public class SqlGenerator extends AbstractCodeGenerator {
             sql.append("            " + col.getColName() + "," + System.lineSeparator());
         }
         sql = removeLastChar(sql, ",");
-        sql.append(")" + System.lineSeparator());
+        sql.append("        )" + System.lineSeparator());
         sql.append("        VALUES(" + System.lineSeparator());
         for (Column col : table.getColumnList()) {
-            sql.append("            #{" + col.getCamelColName() + "}," + System.lineSeparator());
-
+            sql.append("            #{" + col.getCamelColName() + "," + getJdbcType(col.getColDBType()) + "}," + System.lineSeparator());
         }
         sql = removeLastChar(sql, ",");
-        sql.append(")");
+        sql.append("        )");
         return sql.toString();
     }
 
     public String createBatchInsertSql(Table table) {
         StringBuilder sql = new StringBuilder("INSERT INTO " + table.getTableName() + "(" + System.lineSeparator());
         sql.append(getColumns(table));
-        sql = removeLastChar(sql, ",");
-        sql.append(")" + System.lineSeparator());
+        sql.append("        )" + System.lineSeparator());
         sql.append("        VALUES" + System.lineSeparator());
         sql.append("        <foreach collection=\"collection\" item=\"item\" open=\"(\" close=\")\" separator=\"),(\">" + System.lineSeparator());
         for (Column col : table.getColumnList()) {
-            sql.append("            #{item." + col.getCamelColName() + "}," + System.lineSeparator());
-
+            sql.append("            #{item." + col.getCamelColName() + "," + getJdbcType(col.getColDBType()) + "}," + System.lineSeparator());
         }
         sql = removeLastChar(sql, ",");
         sql.append("        </foreach>");
@@ -85,6 +84,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
         for (Column col : table.getColumnList()) {
             sql.append("            " + col.getColName() + "," + System.lineSeparator());
         }
+        sql = removeLastChar(sql, ",");
         return sql.toString();
     }
 
@@ -104,17 +104,20 @@ public class SqlGenerator extends AbstractCodeGenerator {
 
     public String createUpdateSql(Table table) {
         StringBuilder sql = new StringBuilder("UPDATE " + table.getTableName() + " SET" + System.lineSeparator());
+        sql.append("       <set>" + System.lineSeparator());
         for (Column col : table.getColumnList()) {
-            sql.append("            " + col.getColName() + "=#{" + col.getCamelColName() + "}," + System.lineSeparator());
+            sql.append("          <if test=\"" + col.getCamelColName() + " != null\">" + System.lineSeparator());
+            sql.append("              " + col.getColName() + " = #{" + col.getCamelColName() + "," + getJdbcType(col.getColDBType()) + "}," + System.lineSeparator());
+            sql.append("          </if>" + System.lineSeparator());
         }
         sql = removeLastChar(sql, ",");
-        sql.append(System.lineSeparator());
+        sql.append("       <set>" + System.lineSeparator());
         sql.append("        WHERE "+table.getColumnList().get(0).getColName()+"=#{"+table.getColumnList().get(0).getCamelColName()+"}");
         return sql.toString();
     }
 
     public StringBuilder removeLastChar(StringBuilder str, String code) {
-        return new StringBuilder(str.substring(0, str.lastIndexOf(code)));
+        return new StringBuilder(str.substring(0, str.lastIndexOf(code)) + str.substring(str.lastIndexOf(code)+1));
     }
 
     public String getFileName(Table table) {

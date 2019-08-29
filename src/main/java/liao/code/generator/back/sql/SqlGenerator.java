@@ -109,7 +109,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
         }
         sql = removeLastChar(sql, ",");
         sql.append(System.lineSeparator());
-        sql.append("        WHERE id=#{id}");
+        sql.append("        WHERE "+table.getColumnList().get(0).getColName()+"=#{"+table.getColumnList().get(0).getCamelColName()+"}");
         return sql.toString();
     }
 

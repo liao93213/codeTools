@@ -17,7 +17,7 @@ public class BeanClassGenerator extends AbstractClassGenerator {
     private static final String CONFIG_FILE = "PoModel";
     protected String createCode(Table table){
         StringBuilder content = createAttr(table);
-        content.append(getMethodDefine(table.getColumnList()));
+        content.append("");
         return content.toString();
     }
     private StringBuilder createAttr(Table table){
@@ -44,7 +44,7 @@ public class BeanClassGenerator extends AbstractClassGenerator {
     }
 
     public String getFileName(Table table){
-        return  "model"+ File.separator+NameUtils.getClassName(table.getTableName())+".java";
+        return  "model"+File.separator+"po"+ File.separator+NameUtils.getClassName(table.getTableName())+"PO.java";
     }
 
     @Override

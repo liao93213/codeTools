@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import #basePackage#.model.#className#;
-import #basePackage#.vo.#className#Vo;
-import #basePackage#.dao.#className#Dao;
-import #basePackage#.service.#className#Service;
+import  #basePackage#.domain.do.#className#DO;
+import  #basePackage#.domain.parameter.#className#Parameter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

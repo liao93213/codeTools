@@ -1,16 +1,17 @@
-package #basePackage#.model;
+
+import com.nicetuan.basic.common.bean.BaseBean;
+import com.nicetuan.basic.common.bean.DomainBean;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 /**
  * #tableComment#
  */
-public class #className#Domain{
-    public List<#className#Result> get#className#ListForPage(#className#Parameter #alias#){
-            List<#className#DO> resultList = #alias#Dao.get#className#ListForPage(#alias#Parameter);
-            setPageInfo(resultList);
-            return resultList;
-        }
+@Getter
+@Setter
+public class #className#  extends BaseBean implements DomainBean{
+#content#
 }

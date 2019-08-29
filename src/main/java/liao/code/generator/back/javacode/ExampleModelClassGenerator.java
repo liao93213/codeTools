@@ -11,7 +11,7 @@ import java.io.File;
 public class ExampleModelClassGenerator extends BeanClassGenerator {
     private static final String CONFIG_FILE = "ExampleModel";
     public String getFileName(Table table){
-        return  "model"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Example.java";
+        return  "model"+ File.separator+"example"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Example.java";
     }
 
     @Override

@@ -1,8 +1,6 @@
 package liao.code.generator.back.sql;
 
 import liao.code.generator.AbstractCodeGenerator;
-import liao.code.generator.back.factory.Factory;
-import liao.code.generator.back.javacode.BeanClassGenerator;
 import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
 import liao.utils.NameUtils;
@@ -23,20 +21,20 @@ public class SqlGenerator extends AbstractCodeGenerator {
         String insertSql = createInsertSql(table);
         String updateSql = createUpdateSql(table);
         String resultMap = createResultMap(table);
+        String columns = getColumns(table);
+        String batchInsert = createBatchInsertSql(table);
         model = model.replace("#tableName#", table.getTableName());
         model = model.replace("#selectSQL#", selectSql);
         model = model.replace("#insertSQL#", insertSql);
-        model = model.replace("#resultMap#",resultMap);
+        model = model.replace("#resultMap#", resultMap);
+        model = model.replace("#columns#", columns);
+        model = model.replace("#saveAll#", batchInsert);
         return model.replace("#updateSQL#", updateSql);
     }
 
     public String createSelectSql(Table table) {
         StringBuilder sql = new StringBuilder("SELECT" + System.lineSeparator());
-        for (Column col : table.getColumnList()) {
-            sql.append("            t." + col.getColName() + "," + System.lineSeparator());
-        }
-        sql = removeLastChar(sql, ",");
-        sql.append(System.lineSeparator());
+        sql.append("        <include refid=\"columns\"/>" + System.lineSeparator());
         sql.append("        FROM " + table.getTableName() + " t" + System.lineSeparator());
         return sql.toString();
     }
@@ -44,7 +42,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
     public String createResultMap(Table table) {
         StringBuilder sql = new StringBuilder();
         for (Column col : table.getColumnList()) {
-            sql.append("        <result property=\""+col.getCamelColName()+"\" column=\""+col.getColName()+"\"/>");
+            sql.append("        <result property=\"" + col.getCamelColName() + "\" column=\"" + col.getColName() + "\"/>" + System.lineSeparator());
         }
         return sql.toString();
     }
@@ -66,6 +64,30 @@ public class SqlGenerator extends AbstractCodeGenerator {
         return sql.toString();
     }
 
+    public String createBatchInsertSql(Table table) {
+        StringBuilder sql = new StringBuilder("INSERT INTO " + table.getTableName() + "(" + System.lineSeparator());
+        sql.append(getColumns(table));
+        sql = removeLastChar(sql, ",");
+        sql.append(")" + System.lineSeparator());
+        sql.append("        VALUES" + System.lineSeparator());
+        sql.append("        <foreach collection=\"collection\" item=\"item\" open=\"(\" close=\")\" separator=\"),(\">" + System.lineSeparator());
+        for (Column col : table.getColumnList()) {
+            sql.append("            #{item." + col.getCamelColName() + "}," + System.lineSeparator());
+
+        }
+        sql = removeLastChar(sql, ",");
+        sql.append("        </foreach>");
+        return sql.toString();
+    }
+
+    public String getColumns(Table table) {
+        StringBuilder sql = new StringBuilder();
+        for (Column col : table.getColumnList()) {
+            sql.append("            " + col.getColName() + "," + System.lineSeparator());
+        }
+        return sql.toString();
+    }
+
     public String getJdbcType(String dbType) {
         if (dbType.toLowerCase().contains("tinyint") || dbType.toLowerCase().contains("smallint")
                 || dbType.toLowerCase().contains("int") || dbType.toLowerCase().contains("bigint")) {
@@ -74,7 +96,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
             return "jdbcType=NUMERIC";
         } else if (dbType.toLowerCase().contains("varchar")) {
             return "jdbcType=VARCHAR";
-        }else if(dbType.toLowerCase().contains("datetime") || dbType.toLowerCase().contains("date")){
+        } else if (dbType.toLowerCase().contains("datetime") || dbType.toLowerCase().contains("date")) {
             return "jdbcType=DATE";
         }
         return "jdbcType=VARCHAR";

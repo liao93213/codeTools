@@ -1,12 +1,18 @@
-package #basePackage#.model;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+
+import com.nicetuan.basic.common.bean.BaseBean;
+import com.nicetuan.basic.common.bean.DtoBean;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * #tableComment#
+ * #tableComment#调用传输类
  */
-public class #className#Result {
+@Getter
+@Setter
+public class #className#Result extends BaseBean implements DtoBean{
 #content#
 }

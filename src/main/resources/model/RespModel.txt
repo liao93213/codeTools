@@ -1,12 +1,16 @@
-package #basePackage#.model;
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
+import com.nicetuan.basic.common.bean.DomainBean;
+import com.nicetuan.basic.common.bean.PagedParameter;
 /**
  * #tableComment#
  */
-public class #className#Resp implements Serializable {
+@Getter
+@Setter
+public class #className#Response extends PagedParameter implements DomainBean{
 #content#
 }

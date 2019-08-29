@@ -1,19 +1,20 @@
-package #basePackage#.manager.api;
 
 import java.util.List;
-
-import  #basePackage#.#className#DO;
+import  #basePackage#.domain.do.#className#PO;
+import  #basePackage#.domain.do.#className#Example;
+import  #basePackage#.domain.domain.#className#Domain;
+import  #basePackage#.domain.parameter.#className#Parameter;
 
 
 /**
  * #tableComment#
  */
 public interface #className#Manager{
-    List<#className#DO> get#className#ListForPage(#className#Parameter #alias#Parameter);
+    List<#className#PO> get#className#ListForPage(#className#Parameter #alias#Parameter);
 
     Integer get#className#ListCount(#className#Parameter #alias#Parameter);
 
-    #className#DO get#className#ById(Long id);
+    #className#PO get#className#ById(Long id);
 
     Integer save#className#(#className#Parameter #alias#Parameter);
 

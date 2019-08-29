@@ -1,14 +1,16 @@
-package #basePackage#.manager.impl;
 
 import java.util.List;
 
-import  #basePackage#.#className#DO;
+import  #basePackage#.domain.do.#className#DO;
+import  #basePackage#.domain.do.#className#Example;
+import  #basePackage#.domain.domain.#className#Domain;
+import  #basePackage#.domain.parameter.#className#Parameter;
 
 
 /**
  * #tableComment#
  */
- @Service
+@Service
 public class #className#Manager implements #className#Manager{
 
 }

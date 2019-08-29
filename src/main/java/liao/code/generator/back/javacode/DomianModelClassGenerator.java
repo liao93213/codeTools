@@ -11,7 +11,7 @@ import java.io.File;
 public class DomianModelClassGenerator extends BeanClassGenerator {
     private static final String CONFIG_FILE = "DomainModel";
     public String getFileName(Table table){
-        return  "model"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Domain.java";
+        return "model" + File.separator + NameUtils.getClassName(table.getTableName()) + ".java";
     }
 
     @Override

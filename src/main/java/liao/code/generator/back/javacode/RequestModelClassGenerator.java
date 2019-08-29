@@ -11,7 +11,7 @@ import java.io.File;
 public class RequestModelClassGenerator extends BeanClassGenerator {
     private static final String CONFIG_FILE = "ReqModel";
     public String getFileName(Table table){
-        return  "model"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Request.java";
+        return  "model"+ File.separator+"request"+ File.separator+NameUtils.getClassName(table.getTableName())+"Request.java";
     }
 
     @Override

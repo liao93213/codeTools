@@ -1,22 +1,24 @@
-package #basePackage#.dao;
 
 import java.util.List;
-import  #basePackage#.model.#className#;
-import  #basePackage#.vo.#className#Vo;
+import  #basePackage#.domain.po.#className#PO;
+import  #basePackage#.domain.example.#className#Example;
+import  #basePackage#.domain.#className#;
 
 /**
  * #tableComment#
  */
 public interface #className#Dao{
-    List<#className#Vo> get#className#ListForPage(#className#Vo #alias#);
+    List<#className#PO> get#className#ListForPage(#className#Example #alias#);
 
-    Integer get#className#ListCount(#className#Vo #alias#);
+    Integer get#className#ListCount(#className#Example #alias#);
 
-    #className#Vo get#className#ById(Long id);
+    #className#PO get#className#ById(Long id);
 
-    void insert#className#(#className#Vo #alias#);
+    void insert#className#(#className#Domain #alias#);
 
-    void update#className#(#className#Vo #alias#);
+    void update#className#(#className#Domain #alias#);
+
+     void saveAll#className#(#className#Domain #alias#);
 }
 
 

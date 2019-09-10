@@ -1,15 +1,17 @@
-package #basePackage#.domain.response;
+package #basePackage#.facade.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 import com.nicetuan.basic.common.bean.PagedParameter;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * #tableComment#
  */
 @Getter
 @Setter
-public class #className# Response extends PagedParameter{
+public class #className#Response{
 #content#
 }

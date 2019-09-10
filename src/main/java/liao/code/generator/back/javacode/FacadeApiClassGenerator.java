@@ -7,10 +7,10 @@ import liao.utils.NameUtils;
 import java.io.File;
 
 /**
- * Created by ao on 2017/10/23.
+ * Created by cheng on 2019/9/2.
  */
-public class ServiceClassGenerator  extends AbstractClassGenerator{
-    private static final String CONFIG_FILE = "IService";
+public class FacadeApiClassGenerator extends AbstractClassGenerator{
+    private static final String CONFIG_FILE = "FacadeApiModel";
 
     @Override
     protected String getConfFile() {
@@ -19,6 +19,6 @@ public class ServiceClassGenerator  extends AbstractClassGenerator{
 
     @Override
     protected String getFileName(Table table) {
-        return "service"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Service.java";
+        return "facade"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Facade.java";
     }
 }

@@ -36,7 +36,7 @@ public class CommonUtils {
     public static  Map<Integer,String> convertEnumToMap(EnumValue[] values){
         LinkedHashMap<Integer,String> map = new LinkedHashMap<>();
         for(EnumValue enumValue : values){
-           map.put(enumValue.getValue(),enumValue.getDesc());
+            map.put(enumValue.getValue(),enumValue.getDesc());
         }
         return map;
     }
@@ -47,23 +47,25 @@ public class CommonUtils {
             return "Long";
         }else if(sqlType.equals("INT") || sqlType.equals("SMALLINT") || sqlType.equals("TINYINT")){
             return "Integer";
-        }else if (sqlType.equals("CHAR") || sqlType.equals("VARCHAR")){
+        }else if (sqlType.equals("CHAR") || sqlType.equals("VARCHAR") || sqlType.equals("TEXT")){
             return "String";
         }else if(sqlType.equals("DATE") || sqlType.equals("DATETIME")){
             return "Date";
         }else if(sqlType.equals("DECIMAL")){
             return "BigDecimal";
+        }else if(sqlType.equals("TIMESTAMP")){
+            return "Long";
         }
         return sqlType;
     }
 
     public static String createNewJavaObject(String javaType, int index) {
         if (javaType.equals("Long")) {
-            return ""+index+"l";
+            return ""+index+"l * num";
         } else if (javaType.equals("Integer")) {
-            return index+"";
+            return index+" * num";
         } else if (javaType.equals("String")) {
-            return "\"x" + index+"\"";
+            return "\"x" + index+"\" + num";
         } else if (javaType.equals("Date")) {
             return "new Date()";
         } else if (javaType.equals("BigDecimal")) {

@@ -14,6 +14,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class #className# Result extends BaseBean implements DtoBean{
+public class #className#Result extends BaseBean implements DtoBean{
 #content#
 }

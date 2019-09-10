@@ -1,25 +1,27 @@
 package #basePackage#.dao.api;
 
 import java.util.List;
-import  #basePackage#.domain.po.#className#PO;
-import  #basePackage#.domain.example.#className#Example;
-import  #basePackage#.domain.#className#;
+
+import #basePackage#.domain.po.#className#PO;
+import #basePackage#.domain.example.#className#Example;
+import #basePackage#.domain.#className#;
 
 /**
- * #tableComment#
+ *#tableComment# 
  */
 public interface #className#Dao{
-    List<#className#PO> get#className#ListForPage(#className#Example #alias#Example);
+    List<#className#> get#className#ListForPage(#className#Example #alias#);
 
-    Integer get#className#ListCount(#className#Example #alias#Example);
+    Integer get#className#ListCount(#className#Example #alias#);
 
-    #className#PO get#className#ById(Long id);
+    #className# get#className#ById(#className#Example #alias#Example);
 
-    int insert#className#(#className# #alias#);
+    int insert#className#(#className#PO #alias#PO);
 
-    int update#className#(#className# #alias#);
+    int update#className#(#className#PO #alias#PO);
 
-    void saveAll#className#(List<#className#> #alias#List);
+    void saveAll#className#(List<#className#PO> #alias#POList);
+
 }
 
 

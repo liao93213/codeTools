@@ -1,3 +1,6 @@
+package #basePackage#.domain.params;
+
+import com.nicetuan.basic.common.bean.PagedParameter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +14,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class #className#Parameter{
+public class #className#Parameter extends PagedParameter{
 #content#
 }

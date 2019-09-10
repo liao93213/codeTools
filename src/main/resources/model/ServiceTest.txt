@@ -1,7 +1,8 @@
 
-import #basePackage#.domain.params.#className#Parameter;
-import #basePackage#.domain.result.#className#Result;
+import #basePackage#.domain.#className#;
+import #basePackage#.domain.example.#className#Example;
 import #basePackage#.service.api.#className#Service;
+import com.nicetuan.basic.common.test.BaseTest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,62 +10,78 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.math.BigDecimal;
 import java.util.List;
+
 
 /**
  * #tableComment#
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OfcApplication.class)
-public class #className#ServiceImplTest {
+public class #className#Test extends BaseTest {
     @Autowired
     private #className#Service #alias#Service;
+
+    @Test
+    public void test() throws IllegalAccessException, IOException, InvocationTargetException {
+        super.test();
+    }
+
     @Test
     public void get#className#ListForPage() {
-        #className#Parameter #alias#Parameter = createTestData1();
-        List<#className#Result> #alias#ResultList = #alias#Service.get#className#ListForPage(#alias#Parameter);
-        System.out.println(#alias#ResultList);
+        #className#Example #alias# = createTestDataExample(1);
+        #alias#.setOffset(0);
+        #alias#.setSize(10);
+        List<#className#> #alias#List = #alias#Service.get#className#ListForPage(#alias#);
+        System.out.println(#alias#List);
     }
 
     @Test
     public void get#className#ListCount() {
-        #className#Parameter #alias#Parameter = createTestData1();
-        System.out.println(#alias#Service.get#className#ListCount(#alias#Parameter));
+        #className#Example #alias# = createTestDataExample(1);
+         #alias#.setOffset(0);
+         #alias#.setSize(10);
+        System.out.println(#alias#Service.get#className#ListCount(#alias#));
     }
 
     @Test
     public void get#className#ById() {
-        #className#Result #alias#Result = #alias#Service.get#className#ById(id);
-        System.out.println(#alias#Result);
+        #className# #alias# = #alias#Service.get#className#ById(createTestDataExample(1));
+        System.out.println(#alias#);
     }
 
     @Test
     public void insert#className#() {
-        #className#Parameter #alias#Parameter = createTestData1();
-        System.out.println(#alias#Service.insert#className#(#alias#Parameter));
+        #className# #alias# = createTestDataDomain(1);
+        System.out.println(#alias#Service.insert#className#(#alias#));
     }
 
     @Test
     public void update#className#() {
-        #className#Parameter #alias#Parameter = createTestData1();
-        System.out.println(#alias#Service.update#className#(#alias#Parameter));
+        #className# #alias# = createTestDataDomain(1);
+        System.out.println(#alias#Service.update#className#(#alias#));
     }
 
     @Test
     public void saveAll#className#() {
-        List<#className#Parameter> #alias#ParameterList = new ArrayList<#className#Parameter>();
-        #alias#ParameterList.add(createTestData1());
-        #alias#ParameterList.add(createTestData2());
-        #alias#Service.saveAll#className#(#alias#ParameterList);
+        List<#className#> #alias#List = new ArrayList<#className#>();
+        #alias#List.add(createTestDataDomain(3));
+        #alias#List.add(createTestDataDomain(4));
+        #alias#Service.saveAll#className#(#alias#List);
     }
 
-    public #className#Parameter createTestData1() {
-#createTestData1#
+    public #className#Example createTestDataExample(int num) {
+        #className#Example #alias# = new #className#Example();
+#createTestData#
     }
-     public #className#Parameter createTestData2() {
-#createTestData2#
+
+    public #className# createTestDataDomain(int num) {
+        #className# #alias# = new #className#();
+#createTestData#
     }
 }

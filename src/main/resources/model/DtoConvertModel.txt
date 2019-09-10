@@ -1,0 +1,144 @@
+package #basePackage#.facade.impl.convert;
+
+import #basePackage#.domain.#className#;
+import #basePackage#.domain.example.#className#Example;
+import #basePackage#.domain.params.#className#Parameter;
+import #basePackage#.domain.result.#className#Result;
+import #basePackage#.facade.api.dto.#className#Request;
+import #basePackage#.facade.api.dto.#className#Response;
+import com.nicetuan.basic.common.bean.util.BeanUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * #tableComment#
+ */
+public class #className#Convert {
+    /**
+     * @param #alias#Request 不传时返回空null
+     * @return
+     */
+    public static #className#Parameter requestToParameter(#className#Request #alias#Request) {
+        if (#alias#Request == null) {
+            return null;
+        }
+        #className#Parameter #alias#Parameter = new #className#Parameter();
+        BeanUtils.copy(#alias#Request, #alias#Parameter);
+        return #alias#Parameter;
+    }
+
+    /**
+     * @param #alias#Request 不传时返回空null
+     * @return
+     */
+    public static #className#Example requestToExample(#className#Request #alias#Request) {
+        if (#alias#Request == null) {
+            return null;
+        }
+        #className#Example #alias#Example = new #className#Example();
+        BeanUtils.copy(#alias#Request, #alias#Example);
+        return #alias#Example;
+    }
+
+    /**
+     * @param #alias#RequestList 不传时返回空null
+     * @return
+     */
+    public static List<#className#Example> requestToExampleList(List<#className#Request> #alias#RequestList) {
+        if (#alias#RequestList == null) {
+            return null;
+        }
+        return BeanUtils.convertList(#alias#RequestList, #className#Example.class);
+    }
+
+    /**
+     * @param #alias#Request 不传时返回空null
+     * @return
+     */
+    public static #className# requestToDomain(#className#Request #alias#Request) {
+        if (#alias#Request == null) {
+            return null;
+        }
+        #className# #alias# = new #className#();
+        BeanUtils.copy(#alias#Request, #alias#);
+        return #alias#;
+    }
+
+    /**
+     * @param #alias#RequestList 不传时返回空null
+     * @return
+     */
+    public static List<#className#> requestToDomainList(List<#className#Request> #alias#RequestList) {
+        if (#alias#RequestList == null) {
+            return null;
+        }
+        return BeanUtils.convertList(#alias#RequestList, #className#.class);
+    }
+
+
+    /**
+     * @param #alias#RequestList 不传时返回空null
+     * @return
+     */
+    public static List<#className#Parameter> requestToParameterList(List<#className#Request> #alias#RequestList) {
+        if (#alias#RequestList == null) {
+            return null;
+        }
+        return BeanUtils.convertList(#alias#RequestList, #className#Parameter.class);
+    }
+
+    /**
+     * @param #alias#ResultList 不传时返回空list
+     * @return
+     */
+    public static List<#className#Response> resultToResponseList(List<#className#Result> #alias#ResultList) {
+        if (#alias#ResultList == null) {
+            return Collections.emptyList();
+        }
+        List<#className#Response> #alias#ResponseList = new ArrayList<>();
+        for (#className#Result #alias#Result : #alias#ResultList) {
+            #alias#ResponseList.add(resultToResponse(#alias#Result));
+        }
+        return #alias#ResponseList;
+    }
+
+    /**
+     * @param #alias#Result 不传时返回空list
+     * @return
+     */
+    public static #className#Response resultToResponse(#className#Result #alias#Result) {
+        if (#alias#Result == null) {
+            return null;
+        }
+        #className#Response #alias#Response = new #className#Response();
+        BeanUtils.copy(#alias#Result, #alias#Response);
+        return #alias#Response;
+    }
+
+    /**
+     * @param #alias#List 不传时返回空list
+     * @return
+     */
+    public static List<#className#Response> domainToResponseList(List<#className#> #alias#List) {
+        if (#alias#List == null) {
+            return Collections.emptyList();
+        }
+        List<#className#Response> #alias#ResponseList = BeanUtils.convertList(#alias#List, #className#Response.class);
+        return #alias#ResponseList;
+    }
+
+    /**
+     * @param #alias# 不传时返回空list
+     * @return
+     */
+    public static #className#Response domainToResponse(#className# #alias#) {
+        if (#alias# == null) {
+            return null;
+        }
+        #className#Response #alias#Response = new #className#Response();
+        BeanUtils.copy(#alias#, #alias#Response);
+        return #alias#Response;
+    }
+}

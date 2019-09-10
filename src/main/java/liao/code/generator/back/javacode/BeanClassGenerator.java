@@ -1,10 +1,10 @@
 package liao.code.generator.back.javacode;
 
-import liao.code.generator.back.factory.Factory;
+
+
 import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
 import liao.utils.NameUtils;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * Created by ao on 2017/10/12.
  */
-@Component
 public class BeanClassGenerator extends AbstractClassGenerator {
     private static final String CONFIG_FILE = "PoModel";
     protected String createCode(Table table){
@@ -20,7 +19,7 @@ public class BeanClassGenerator extends AbstractClassGenerator {
         content.append("");
         return content.toString();
     }
-    private StringBuilder createAttr(Table table){
+    protected StringBuilder createAttr(Table table){
         List<Column> colList = table.getColumnList();
         StringBuilder content = new StringBuilder();
         for(Column col : colList){

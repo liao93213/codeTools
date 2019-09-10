@@ -1,14 +1,12 @@
 package #basePackage#.service.impl;
 
-import #basePackage#.domain.convert.#className#Convert;
-import #basePackage#.domain.params.#className#Parameter;
-import #basePackage#.domain.po.#className#PO;
-import #basePackage#.domain.result.#className#Result;
+import #basePackage#.domain.#className#;
+import com.basic.ofc.service.api.#className#Service;
+import #basePackage#.domain.example.#className#Example;
+import #basePackage#.domain.#className#;
 import #basePackage#.manager.api.#className#Manager;
-import #basePackage#.service.api.#className#Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,35 +17,37 @@ import java.util.List;
 public class #className#ServiceImpl implements #className#Service {
     @Autowired
     private #className#Manager #alias#Manager;
+
     @Override
-    public List<#className#Result> get#className#ListForPage(#className#Parameter #alias#Parameter) {
-        List<#className#PO> #alias#POList = #alias#Manager.get#className#ListForPage(#alias#Parameter);
-        return #className#Convert.poToResultList(#alias#POList);
+    public List<#className#> get#className#ListForPage(#className#Example #alias#Example) {
+        List<#className#> #alias#List = #alias#Manager.get#className#ListForPage(#alias#Example);
+        return #alias#List;
     }
 
     @Override
-    public Integer get#className#ListCount(#className#Parameter #alias#Parameter) {
-        return #alias#Manager.get#className#ListCount(#alias#Parameter);
+    public Integer get#className#ListCount(#className#Example #alias#Example) {
+        return #alias#Manager.get#className#ListCount(#alias#Example);
     }
 
     @Override
-    public #className#Result get#className#ById(Long id) {
-        #className#PO #alias#PO = #alias#Manager.get#className#ById(id);
-        return #className#Convert.poToResult(#alias#PO);
+    public #className# get#className#ById(#className#Example #alias#Example) {
+        #className# #alias# = #alias#Manager.get#className#ById(#alias#Example);
+        return #alias#;
     }
 
     @Override
-    public int insert#className#(#className#Parameter #alias#Parameter) {
-        return #alias#Manager.insert#className#(#alias#Parameter);
+    public int insert#className#(#className# #alias#) {
+        return #alias#Manager.insert#className#(#alias#);
     }
 
     @Override
-    public int update#className#(#className#Parameter #alias#Parameter) {
-        return #alias#Manager.update#className#(#alias#Parameter);
+    public int update#className#(#className# #alias#) {
+        return #alias#Manager.update#className#(#alias#);
     }
 
     @Override
-    public void saveAll#className#(List<#className#Parameter> #alias#ParameterList) {
-        #alias#Manager.saveAll#className#(#alias#ParameterList);
+    public void saveAll#className#(List<#className#> #alias#List) {
+        #alias#Manager.saveAll#className#(#alias#List);
     }
+
 }

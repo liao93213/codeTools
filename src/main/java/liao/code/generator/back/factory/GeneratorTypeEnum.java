@@ -23,8 +23,10 @@ public enum GeneratorTypeEnum {
     SQL(13,new SqlGenerator()),
     MANAGER(14,new MangerClassGenerator()),
     MANAGER_IMPL(15,new ManagerImplClassGenerator()),
-    COBNVERT(16,new BeanConvertClassGenerator()),
-    SERVICE_TEST(17,new ServiceTestClassGenerator());
+    CONVERT(16,new BeanConvertClassGenerator()),
+    SERVICE_TEST(17,new ServiceTestClassGenerator()),
+    FACADE_CONVERT(18,new BeanConvertForFacadeClassGenerator()),
+    FACADE_API(19,new FacadeApiClassGenerator());
     private int type;
     private AbstractCodeGenerator generator;
 

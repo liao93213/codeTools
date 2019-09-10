@@ -46,6 +46,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
         for (Column col : table.getColumnList()) {
             sql.append("        <result property=\"" + col.getCamelColName() + "\" column=\"" + col.getColName() + "\"/>" + System.lineSeparator());
         }
+        sql = removeCharAndLater(sql,System.lineSeparator());
         return sql.toString();
     }
 
@@ -84,7 +85,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
         for (Column col : table.getColumnList()) {
             sql.append("            " + col.getColName() + "," + System.lineSeparator());
         }
-        sql = removeLastChar(sql, ",");
+        sql = removeCharAndLater(sql, ",");
         return sql.toString();
     }
 
@@ -103,7 +104,7 @@ public class SqlGenerator extends AbstractCodeGenerator {
     }
 
     public String createUpdateSql(Table table) {
-        StringBuilder sql = new StringBuilder("UPDATE " + table.getTableName() + " SET" + System.lineSeparator());
+        StringBuilder sql = new StringBuilder("UPDATE " + table.getTableName() + System.lineSeparator());
         sql.append("       <set>" + System.lineSeparator());
         for (Column col : table.getColumnList()) {
             sql.append("          <if test=\"" + col.getCamelColName() + " != null\">" + System.lineSeparator());
@@ -118,6 +119,10 @@ public class SqlGenerator extends AbstractCodeGenerator {
 
     public StringBuilder removeLastChar(StringBuilder str, String code) {
         return new StringBuilder(str.substring(0, str.lastIndexOf(code)) + str.substring(str.lastIndexOf(code)+1));
+    }
+
+    public StringBuilder removeCharAndLater(StringBuilder str, String code) {
+        return new StringBuilder(str.substring(0, str.lastIndexOf(code)));
     }
 
     public String getFileName(Table table) {

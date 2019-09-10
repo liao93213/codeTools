@@ -1,10 +1,12 @@
-package #basePackage#.domain.request;
+package #basePackage#.facade.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 import com.nicetuan.basic.common.bean.PagedParameter;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * #tableComment#
  */

@@ -1,89 +1,113 @@
-package #basePackage#.controller;
+package #basePackage#.facade.impl;
 
+import #basePackage#.domain.#className#;
+import #basePackage#.domain.enums.UserModeEnum;
+import #basePackage#.domain.example.#className#Example;
+import #basePackage#.domain.params.#className#Parameter;
+import #basePackage#.domain.params.SiteParameter;
+import #basePackage#.domain.result.#className#Result;
+import #basePackage#.domain.result.SiteResult;
+import #basePackage#.facade.api.#className#Facade;
+import #basePackage#.facade.api.dto.#className#Request;
+import #basePackage#.facade.api.dto.#className#Response;
+import #basePackage#.facade.api.dto.SiteResp;
+import #basePackage#.facade.impl.convert.#className#Convert;
+import #basePackage#.service.api.#className#Service;
+import #basePackage#.service.api.SiteQueryService;
+import com.nicetuan.basic.common.base.EnumUtil;
+import com.nicetuan.basic.common.bean.CommonResultCode;
+import com.nicetuan.basic.common.bean.Response;
+import com.nicetuan.basic.common.bean.util.BeanUtils;
+import com.nicetuan.basic.common.bean.util.ResponseUtils;
+import com.nicetuan.basic.tool.context.UserContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import #basePackage#.model.#className#;
-import #basePackage#.vo.#className#Vo;
-import #basePackage#.service.#className#Service;
+/**
+ * #tableComment#
+ */
+@RestController
+@Slf4j
+public class #className#Controller implements #className#Facade {
+    @Autowired
+    private #className#Service #alias#Service;
 
+    @PostMapping(value = "/#alias#/pageList", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @Override
+    public Response<Map<String, Object>> pageList(@RequestBody #className#Request request) {
+        #className#Example #alias#Example = #className#Convert.requestToExample(request);
+        List<#className#> resultList = #alias#Service.get#className#ListForPage(#alias#Example);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("#alias#List", #className#Convert.domainToResponseList(resultList));
+        addEnumValue(resultMap);
+        return ResponseUtils.createSuccess(resultMap);
+    }
 
+    @PostMapping(value = "/#alias#/pageCount", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Response<Integer> pageCount(@RequestBody #className#Request request) {
+        #className#Example #alias#Example = #className#Convert.requestToExample(request);
+        int count = #alias#Service.get#className#ListCount(#alias#Example);
+        return ResponseUtils.createSuccess(count);
+    }
 
-@Controller
-@RequestMapping(value = "/#alias#")
-public class #className#Controller{
-	private static final Logger logger = LoggerFactory.getLogger(#className#Controller.class);
+    private void addEnumValue(Map<String, Object> resultMap) {
+        
+    }
 
-     private static final String LIST_PAGE = "";
-     private static final String EDIT_PAGE = "";
-     @Autowired
-     private #className#Service #alias#Service;
+    @ResponseBody
+    @PostMapping(value = "/#alias#/getById", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public Response<Map<String, Object>> get#className#ById(@RequestBody #className#Request request) {
+        #className#Example #alias#Example = #className#Convert.requestToExample(request);
+        #className# #alias# = #alias#Service.get#className#ById(#alias#Example);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("#alias#List",#className#Convert.domainToResponse(#alias#));
+        addEnumValue(resultMap);
+        return ResponseUtils.createSuccess(resultMap);
+    }
 
-     @RequestMapping("getList")
-     public ModelAndView getList(#className#Vo #alias#Vo, HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mv = new ModelAndView(LIST_PAGE);
-        int startNum = (#alias#Vo.getPageNum() == 0 ? 0 : (#alias#Vo.getPageNum() - 1)) * #alias#Vo.getPageSize();
-        #alias#Vo.setStartNum(startNum);
-        List<#className#Vo> items = #alias#Service.get#className#ListForPage(#alias#Vo);
-        int count = #alias#Service.get#className#ListCount(#alias#Vo);
-        mv.addObject("items", items);
-        mv.addObject("totalCount", count);
-        mv.addObject("pageCount",count/#alias#Vo.getPageSize()+1);
-        mv.addObject("#alias#Vo", #alias#Vo);
-        this.setEnumInfo(mv);
-        return mv;
-     }
-     private void setEnumInfo(ModelAndView mv){
+    @ResponseBody
+    @PostMapping(value = "/#alias#/toAdd", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Map<String,Object>> toAdd(){
+        Map<String, Object> resultMap = new HashMap<>();
+        addEnumValue(resultMap);
+        return ResponseUtils.createSuccess(resultMap);
+    }
 
-     }
+    @ResponseBody
+    @PostMapping(value = "/#alias#/saveAll", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public Response saveAll(@RequestBody List<#className#Request> requestList) {
+        #alias#Service.saveAll#className#(#className#Convert.requestToDomainList(requestList));
+        return ResponseUtils.create(CommonResultCode.SUCCESS,"新增#tableComment#成功！");
+    }
 
-     @RequestMapping("toEdit")
-     public ModelAndView toEdit(Long id) {
-        ModelAndView mv = new ModelAndView(EDIT_PAGE);
-        mv.addObject("#alias#Vo", getActivityConfigByIdForPage(id));
-        setEnumInfo(mv);
-        mv.addObject("optType","edit");
-        return mv;
-     }
-     
-     @RequestMapping("toAdd")
-     public ModelAndView toAdd(#className#Vo #alias#Vo) {
-        ModelAndView mv = new ModelAndView(EDIT_PAGE);
-        mv.addObject("#alias#Vo", #alias#Vo);
-        setEnumInfo(mv);
-        mv.addObject("optType","add");
-        return mv;
-     }
+    @ResponseBody
+    @PostMapping(value = "/#alias#/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public Response update(@RequestBody #className#Request request) {
+        #alias#Service.update#className#(#className#Convert.requestToDomain(request));
+        return ResponseUtils.create(CommonResultCode.SUCCESS,"更新#tableComment#成功！");
+    }
 
-     @RequestMapping("toBrowser")
-     public ModelAndView toBrowser(long id) {
-        ModelAndView mv = new ModelAndView(EDIT_PAGE);
-        mv.addObject("#alias#Vo", get#className#ByIdForPage(id));
-        setEnumInfo(mv);
-        mv.addObject("optType","browser");
-        return mv;
-     }
-
-     private #className#Vo get#className#ByIdForPage(Long id){
-        return #alias#Service.getActivityConfigByIdForPage(id);
-     }
+    @ResponseBody
+    @PostMapping(value = "/#alias#/saveOne", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    public Response saveOne(@RequestBody #className#Request request) {
+        #alias#Service.insert#className#(#className#Convert.requestToDomain(request));
+        return ResponseUtils.create(CommonResultCode.SUCCESS,"更新#tableComment#成功！");
+    }
 
 }

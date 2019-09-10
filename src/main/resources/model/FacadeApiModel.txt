@@ -1,0 +1,31 @@
+package #basePackage#.facade.api;
+
+import #basePackage#.facade.api.dto.#className#Request;
+import #basePackage#.facade.api.dto.#className#Response;
+import com.nicetuan.basic.common.bean.Response;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * #tableComment#
+ */
+@FeignClient(value = "nicetuan-ofc")
+public interface #className#Facade {
+    @PostMapping(value = "/#alias#/pageLis", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Map<String,Object>> pageList(@RequestBody #className#Request request);
+    @PostMapping(value = "/#alias#/pageCount", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Integer> pageCount(@RequestBody #className#Request request);
+    @PostMapping(value = "/#alias#/getById", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Map<String, Object>> get#className#ById(@RequestBody #className#Request request);
+    @PostMapping(value = "/#alias#/saveAll", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Boolean> saveAll(@RequestBody List<#className#Request> requestList);
+    @PostMapping(value = "/#alias#/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Boolean> update(@RequestBody #className#Request requestList);
+    @PostMapping(value = "/#alias#/saveOne", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response saveOne(@RequestBody #className#Request request);
+}

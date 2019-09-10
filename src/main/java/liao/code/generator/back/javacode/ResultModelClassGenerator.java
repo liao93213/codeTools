@@ -1,5 +1,7 @@
 package liao.code.generator.back.javacode;
 
+
+
 import liao.parse.table.model.Table;
 import liao.utils.NameUtils;
 
@@ -11,7 +13,7 @@ import java.io.File;
 public class ResultModelClassGenerator extends BeanClassGenerator {
     private static final String CONFIG_FILE = "ResultModel";
     public String getFileName(Table table){
-        return  "model"+ File.separator+"result"+ File.separator+NameUtils.getClassName(table.getTableName())+"Result.java";
+        return  "model"+ File.separator+"result"+ File.separator+ NameUtils.getClassName(table.getTableName())+"Result.java";
     }
 
     @Override

@@ -1,8 +1,7 @@
 package #basePackage#.service.api;
 
-import #basePackage#.domain.params.#className#Parameter;
-import #basePackage#.domain.po.#className#PO;
-import #basePackage#.domain.result.#className#Result;
+import #basePackage#.domain.#className#;
+import #basePackage#.domain.example.#className#Example;
 
 import java.util.List;
 
@@ -10,15 +9,19 @@ import java.util.List;
  * #tableComment#
  */
 public interface #className#Service {
-    List<#className#Result> get#className#ListForPage(#className#Parameter #alias#Parameter);
+    List<#className#> get#className#ListForPage(#className#Example #alias#Example);
 
-    Integer get#className#ListCount(#className#Parameter #alias#Parameter);
+    Integer get#className#ListCount(#className#Example #alias#Example);
 
-    #className#Result get#className#ById(Long id);
+     #className# get#className#ById(#className#Example #alias#Example);
 
-    int insert#className#(#className#Parameter #alias#Parameter);
+    int insert#className#(#className# #alias#);
 
-    int update#className#(#className#Parameter #alias#Parameter);
+    int update#className#(#className# #alias#);
 
-    void saveAll#className#(List<#className#Parameter> #alias#ParameterList);
+    void saveAll#className#(List<#className#> #alias#List);
+
+
 }
+
+

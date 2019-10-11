@@ -12,4 +12,14 @@
 .naturalTowScale {}
 /**正两位小数*/
 .positiveTowScale {}
+/**日期格式校验*/
+.yyyy-MM-dd {}
+/**日期格式校验*/
+.yyyyMMdd {}
+.yyyyMMddHHmmss {}
+/**yyyy-MM-dd_HH:mm:ss*/
+.yyyy-MM-dd_HHmmss {}
+.compare_big{}
+.compare_min{}
+.sum{}
 

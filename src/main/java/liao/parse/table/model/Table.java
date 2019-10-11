@@ -14,7 +14,7 @@ public class Table {
     private String comment;
     private List<Column> columnList;
 
-    public Table(){
+    private Table(){
 
     }
 

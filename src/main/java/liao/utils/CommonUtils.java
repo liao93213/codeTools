@@ -1,5 +1,8 @@
 package liao.utils;
 
+import liao.parse.table.model.Column;
+import liao.parse.table.model.Table;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -39,24 +42,6 @@ public class CommonUtils {
             map.put(enumValue.getValue(),enumValue.getDesc());
         }
         return map;
-    }
-
-    public static String sqlTypeToJavaType(String sqlType){
-        sqlType = sqlType.replaceAll("\\(.+\\)","").toUpperCase();//去掉括号
-        if(sqlType.equals("BIGINT")){
-            return "Long";
-        }else if(sqlType.equals("INT") || sqlType.equals("SMALLINT") || sqlType.equals("TINYINT")){
-            return "Integer";
-        }else if (sqlType.equals("CHAR") || sqlType.equals("VARCHAR") || sqlType.equals("TEXT")){
-            return "String";
-        }else if(sqlType.equals("DATE") || sqlType.equals("DATETIME")){
-            return "Date";
-        }else if(sqlType.equals("DECIMAL")){
-            return "BigDecimal";
-        }else if(sqlType.equals("TIMESTAMP")){
-            return "Long";
-        }
-        return sqlType;
     }
 
     public static String createNewJavaObject(String javaType, int index) {

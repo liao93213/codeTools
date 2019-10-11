@@ -4,6 +4,7 @@ package liao.code.generator.back.javacode;
 
 import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
+import liao.utils.JavaCodeUtils;
 import liao.utils.NameUtils;
 
 import java.io.File;
@@ -20,27 +21,9 @@ public class BeanClassGenerator extends AbstractClassGenerator {
         return content.toString();
     }
     protected StringBuilder createAttr(Table table){
-        List<Column> colList = table.getColumnList();
-        StringBuilder content = new StringBuilder();
-        for(Column col : colList){
-            content.append("    private "+ col.getColJavaType() + " " + col.getCamelColName() + ";//"+col.getComment()+System.lineSeparator());
-        }
-        return content;
+        return JavaCodeUtils.createAttr(table);
     }
-    private StringBuilder getMethodDefine(List<Column> colList){
-        StringBuilder content = new StringBuilder();
-        for(Column col : colList){
-            String getMethod = NameUtils.getGetterMethodName(col.getCamelColName(),col.getColJavaType());
-            String setModel = NameUtils.getSetterMethodName(col.getCamelColName());
-            content.append("    public "+ col.getColJavaType() + " " +getMethod + "(){"+System.lineSeparator());
-            content.append("        return "+col.getCamelColName()+";"+System.lineSeparator());
-            content.append("    }"+System.lineSeparator());
-            content.append("    public void " +setModel + "(" +col.getColJavaType()+" "+ col.getCamelColName()+ "){"+System.lineSeparator());
-            content.append("        this."+col.getCamelColName()+" = "+col.getCamelColName()+";"+System.lineSeparator());
-            content.append("    }"+System.lineSeparator());
-        }
-        return content;
-    }
+
 
     public String getFileName(Table table){
         return  "model"+File.separator+"po"+ File.separator+NameUtils.getClassName(table.getTableName())+"PO.java";

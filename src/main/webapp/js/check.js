@@ -123,7 +123,7 @@ Check.prototype = {
      * @returns
      */
     validateInt: function (value) {
-        if (value === undefined || value === null) {
+        if (value == null || value.trim().length == 0) {
             return false;
         }
         var reg = new RegExp("^-?[0-9]+$");
@@ -137,7 +137,7 @@ Check.prototype = {
      * @returns
      */
     validateNaturalInt: function (value) {
-        if (value === undefined || value === null) {
+        if (value == null || value.trim().length == 0) {
             return false;
         }
         var reg = new RegExp("^[0-9]+$");
@@ -151,7 +151,7 @@ Check.prototype = {
      * @returns
      */
     validatePositiveInt: function (value) {
-        if (value === undefined || value === null) {
+        if (value == null || value.trim().length == 0) {
             return false;
         }
         var reg = new RegExp("^[1-9]+$");
@@ -165,7 +165,7 @@ Check.prototype = {
      * @returns
      */
     validateTowScale: function (value) {
-        if (value === undefined || value === null) {
+        if (value == null || value.trim().length == 0) {
             return false;
         }
         var reg = new RegExp("^-?[0-9]+\.?[0-9]{0,2}$")
@@ -179,7 +179,7 @@ Check.prototype = {
      * @returns
      */
     validateNaturalTowScale: function (value) {
-        if (value === undefined || value === null) {
+        if (value == null || value.trim().length == 0) {
             return false;
         }
         var reg = new RegExp("^[0-9]+\.?[0-9]{0,2}$")

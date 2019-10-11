@@ -3,7 +3,7 @@ package liao.parse.table.mysql;
 import liao.code.generator.page.enums.NullableEnum;
 import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
-import liao.utils.CommonUtils;
+import liao.utils.ParseDDLUtils;
 import liao.utils.NameUtils;
 import liao.utils.PropertyUtils;
 
@@ -65,7 +65,7 @@ public class ParseTableForMySQL {
             String colComment = rs.getString("column_comment");
             int isNullable = rs.getBoolean("is_nullable") ? NullableEnum.YES.getValue() : NullableEnum.NO.getValue();
             String camelColName = NameUtils.underline2Camel(colName);//转成驼峰命名
-            String colJavaType = CommonUtils.sqlTypeToJavaType(colType);
+            String colJavaType = ParseDDLUtils.sqlTypeToJavaType(colType);
             Column col = new Column();
             col.setColName(colName);
             col.setCamelColName(camelColName);

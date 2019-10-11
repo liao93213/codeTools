@@ -4,8 +4,7 @@ import liao.code.generator.AbstractCodeGenerator;
 import liao.code.generator.back.factory.RegistrationFactory;
 import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
-import liao.utils.CommonUtils;
-import liao.utils.NameUtils;
+import liao.utils.ParseDDLUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,56 +41,21 @@ public class ParseMySQLDDL {
         }
     }
     public static Table parseDDLSQL(List<String> sqlList){
-        String tableName = getTableName(sqlList.get(0));
+        String tableName = ParseDDLUtils.getTableName(sqlList.get(0));
         Table table = new Table(tableName);
         List<Column> columnList = new ArrayList<Column>();
         table.setColumnList(columnList);
         for(String oneLine : sqlList){
             if(oneLine.substring(0,1).equals("`")){//是字段定义sql
-                columnList.add(getOneColumn(oneLine,tableName));
+                columnList.add(ParseDDLUtils.getOneColumn(oneLine,tableName));
             }
             if(oneLine.substring(0,1).equals(")")){
-                String comment = getComment(oneLine,false);
+                String comment = ParseDDLUtils.getComment(oneLine,false);
                 comment = comment.replaceAll("表$","");
                 table.setComment(comment);
             }
         }
         return table;
     }
-    private static Column getOneColumn(String oneLine,String tableName){
-        oneLine = oneLine.replaceAll("`|'|,","");
-        String[] eles = oneLine.split(" ");
-        String colName = eles[0];
-        String colType = eles[1];
-        String colComment = getComment(oneLine,true);
-        String camelColName = NameUtils.underline2Camel(colName);//转成驼峰命名
-        String colJavaType = CommonUtils.sqlTypeToJavaType(colType);
-        Column col = new Column();
-        col.setColName(colName);
-        col.setCamelColName(camelColName);
-        col.setColDBType(colType);
-        col.setColJavaType(colJavaType);
-        col.setComment(colComment);
-        col.setTableName(tableName);
-        return col;
-    }
 
-    private static String getComment(String line,boolean isRow){
-        line = line.replaceAll("`|'|,|;","");
-        String[] eles = line.split(" ");
-        for(int i = 0;i < eles.length; i++) {
-            if(eles[i].toLowerCase().startsWith("comment")){
-                if(isRow){
-                    return eles[i+1];
-                }else {
-                    return eles[i].split("=")[1];
-                }
-            }
-        }
-        return "";
-    }
-    private static String getTableName(String firstLine){
-        String tableName = firstLine.substring(firstLine.indexOf("`")+1,firstLine.lastIndexOf("`"));
-        return tableName;
-    }
 }

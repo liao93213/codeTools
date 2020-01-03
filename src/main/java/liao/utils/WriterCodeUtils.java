@@ -34,13 +34,15 @@ public class WriterCodeUtils {
         }
     }
 
-    public static List<String> listFileName(String dir) {
+    public static void listFileName(String dir,List<String> fileNameList) {
         File[] files = listFile(dir);
-        List<String> fileNames = new ArrayList<>();
         for (File file : files) {
-            fileNames.add(file.getAbsolutePath());
+            if(file.isDirectory()){
+                listFileName(file.getAbsolutePath(),fileNameList);
+            }else{
+                fileNameList.add(file.getAbsolutePath());
+            }
         }
-        return fileNames;
     }
 
     public static File[] listFile(String dir) {
@@ -77,7 +79,9 @@ public class WriterCodeUtils {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(listFileName("E:\\\\gitwork\\\\basic-ofc\\\\basic-ofc\\\\basic-ofc-domain\\\\src\\\\main\\\\java\\\\com\\\\basic\\\\ofc\\\\domain\\\\"));
-        System.out.println(Files.readAllLines(Paths.get("E:\\\\gitwork\\\\basic-ofc\\\\basic-ofc\\\\basic-ofc-domain\\\\src\\\\main\\\\java\\\\com\\\\basic\\\\ofc\\\\domain\\\\UpdateDeliveryDateMessage.java")));
+        List<String> resultList = new ArrayList<>();
+        listFileName("E:\\\\gitwork\\\\basic-ofc\\\\basic-ofc\\\\basic-ofc-domain\\\\src\\\\main\\\\java\\\\com\\\\basic\\\\",resultList);
+        System.out.println(resultList);
+        //System.out.println(Files.readAllLines(Paths.get("E:\\\\gitwork\\\\basic-ofc\\\\basic-ofc\\\\basic-ofc-domain\\\\src\\\\main\\\\java\\\\com\\\\basic\\\\ofc\\\\domain\\\\UpdateDeliveryDateMessage.java")));
     }
 }

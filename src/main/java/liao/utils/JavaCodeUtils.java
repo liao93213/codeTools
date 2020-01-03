@@ -10,11 +10,13 @@ import java.util.regex.Pattern;
  * Created by cheng on 2019/9/21.
  */
 public class JavaCodeUtils {
-    private static final Pattern METHOD = Pattern.compile("^ +[a-zA-Z0-9]+");
+    private static final Pattern METHOD = Pattern.compile(".+([a-zA-Z0-9]+ *){2,4}\\(.+");
     private static final Pattern COMMENT = Pattern.compile("//");
     public static boolean isMethod(String line){
         return METHOD.matcher(line).matches();
     }
+
+
 
     public static StringBuilder getMethodDefine(List<Column> colList){
         StringBuilder content = new StringBuilder();
@@ -42,9 +44,7 @@ public class JavaCodeUtils {
 
 
     public static void main(String[] args){
-        String regex = "^[1-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\,[0-9]{3} \\[((INFO)|(ERROR)|(DEBUG)|(WARN))\\] \\[([a-zA-Z0-9]|-)+\\] \\[((biz)|(message))\\].+$";
-        Pattern pattern = Pattern.compile(regex);
-        System.out.println(pattern.matcher("2019-10-11 17:32:26,238 [INFO] [SimpleAsyncTaskExecutor-1] [biz] - sht=====>ofc shtUpdateDeliveryDateHandler:updateDeliveryResults[]"
-                +System.lineSeparator()+"2019-10-11 17:32:26,238 [INFO1] [SimpleAsyncTaskExecutor-1] [biz] - sht=====>ofc shtUpdateDeliveryDateHandler:updateDeliveryResults[]").matches());
+        System.out.println(isMethod("static StringBuilder createAttr("));
+        System.out.println(isMethod("private static StringBuilder createAttr;"));
     }
 }

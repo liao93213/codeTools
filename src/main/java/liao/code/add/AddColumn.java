@@ -4,26 +4,25 @@ import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
 import liao.utils.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by cheng on 2019/9/21.
  */
 public class AddColumn {
     private static final Properties properties = PropertyUtils.getConfig("config");
-    private static final String BEAN_DIR = properties.getProperty("beanDir");
-    private static final ThreadLocal<Scanner> threadLocal = new ThreadLocal<>();
-    static {
-        Scanner sc = new Scanner(System.in);
-        threadLocal.set(sc);
-    }
+    private static final String BEAN_DIR = properties.getProperty("base_dir");
+    private static final String BEAN_NAME_REGEX = properties.getProperty("bean_name_regex");
+    private static final Pattern BEAN_REGEX = Pattern.compile(BEAN_NAME_REGEX);
 
     public static void main(String[] args) throws IOException {
         System.out.println("请输入表名：");
-        Scanner sc = threadLocal.get();
+        Scanner sc = new Scanner(System.in);
         Table table = null;
         while (sc.hasNext()) {
             String line = sc.nextLine();
@@ -60,6 +59,7 @@ public class AddColumn {
             List<String> resultCodeList = new ArrayList<>();
             for (int i = 0; i < lineList.size(); i++) {
                 if (attrNum == i) {
+                    resultCodeList.add(lineList.get(i));
                     resultCodeList.add(attrCode);
                 } else if (needMethod && i == lineList.size() - 1) {//最后一行
                     resultCodeList.add(methodCode);
@@ -69,6 +69,7 @@ public class AddColumn {
                 }
 
             }
+            System.out.println("写入："+fileName);
             WriterCodeUtils.modifyCode(fileName, CommonUtils.contactCollectionWithToken(resultCodeList, ""));
 
         }
@@ -77,7 +78,7 @@ public class AddColumn {
     private static int getAttrNum(List<String> lineList) throws IOException {
         for (int lineNum = 0; lineNum < lineList.size(); lineNum++) {
             if (JavaCodeUtils.isMethod(lineList.get(lineNum))) {
-                return lineNum;
+                return lineNum-1;
             }
         }
         return lineList.size() - 2;
@@ -102,23 +103,23 @@ public class AddColumn {
     }
 
     public static List<String> getNeedWriteBeanName(String className) {
-
-        List<String> fileNameList = WriterCodeUtils.listFileName(BEAN_DIR);
+        List<String> fileNameList = new ArrayList<>();
+        WriterCodeUtils.listFileName(BEAN_DIR,fileNameList);
 
         List<String> resultList = new ArrayList<>();
         for (String fileName : fileNameList) {
-            if (fileName.contains(className)) {
+            String[] dirs = fileName.split("\\\\");
+            String javaFileName = dirs[dirs.length-1];
+            if(!javaFileName.endsWith(".java")){
+                continue;
+            }
+            javaFileName = javaFileName.replace(".java","");
+            if (javaFileName.equals(className) || (javaFileName.contains(className) && BEAN_REGEX.matcher(javaFileName).matches())) {
                 resultList.add(fileName);
             }
         }
-        System.out.println("需要添加的bean：" + resultList);
-        System.out.println("请输入需要添加的BEAN：");
-        Scanner sc = threadLocal.get();
-        while (sc.hasNext()) {
-            String[] beanNames = sc.nextLine().trim().split(",");
-            return Arrays.asList(beanNames);
-        }
-        return new ArrayList<>();
+
+        return resultList;
 
     }
 }

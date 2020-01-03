@@ -75,6 +75,14 @@ public class AddColumn {
         }
     }
 
+    private static void modifyColumn(List<String> allCodeList,List<Column> columnList){
+        for(Column column : columnList){
+            for(String lineCode : allCodeList){
+
+            }
+        }
+    }
+
     private static int getAttrNum(List<String> lineList) throws IOException {
         for (int lineNum = 0; lineNum < lineList.size(); lineNum++) {
             if (JavaCodeUtils.isMethod(lineList.get(lineNum))) {
@@ -105,7 +113,7 @@ public class AddColumn {
     public static List<String> getNeedWriteBeanName(String className) {
         List<String> fileNameList = new ArrayList<>();
         WriterCodeUtils.listFileName(BEAN_DIR,fileNameList);
-
+        Pattern BEAN_REGEX = Pattern.compile(BEAN_NAME_REGEX.replace("##",className));
         List<String> resultList = new ArrayList<>();
         for (String fileName : fileNameList) {
             String[] dirs = fileName.split("\\\\");

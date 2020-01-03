@@ -16,7 +16,9 @@ public class JavaCodeUtils {
         return METHOD.matcher(line).matches();
     }
 
-
+    private void isSetMethod(String code,String setMethodName){
+        code
+    }
 
     public static StringBuilder getMethodDefine(List<Column> colList){
         StringBuilder content = new StringBuilder();

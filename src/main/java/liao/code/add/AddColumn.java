@@ -21,6 +21,7 @@ public class AddColumn {
     private static final Pattern BEAN_REGEX = Pattern.compile(BEAN_NAME_REGEX);
 
     public static void main(String[] args) throws IOException {
+        System.out.println("没有格式化的代码请谨慎使用");
         System.out.println("请输入表名：");
         Scanner sc = new Scanner(System.in);
         Table table = null;
@@ -50,16 +51,19 @@ public class AddColumn {
 
     public static void writeBean(Table table) throws IOException {
         List<String> needWriteFileNameList = getNeedWriteBeanName(table.getClassName());
-        String attrCode = JavaCodeUtils.createAttr(table).toString();
-        String methodCode = JavaCodeUtils.getMethodDefine(table.getColumnList()).toString();
         for (String fileName : needWriteFileNameList) {
             List<String> lineList = Files.readAllLines(Paths.get(fileName));
-            int attrNum = getAttrNum(lineList);
+            //先执行修改字段
+            modifyColumn(lineList,table.getColumnList());
+            String attrCode = JavaCodeUtils.createAttr(table.getColumnList()).toString();
+            String methodCode = JavaCodeUtils.getMethodDefine(table.getColumnList()).toString();
             boolean needMethod = needMethod(lineList);
+            int attrNum = getAttrNum(lineList);
             List<String> resultCodeList = new ArrayList<>();
             for (int i = 0; i < lineList.size(); i++) {
                 if (attrNum == i) {
                     resultCodeList.add(lineList.get(i));
+                    resultCodeList.add(System.lineSeparator());
                     resultCodeList.add(attrCode);
                 } else if (needMethod && i == lineList.size() - 1) {//最后一行
                     resultCodeList.add(methodCode);
@@ -71,15 +75,36 @@ public class AddColumn {
             }
             System.out.println("写入："+fileName);
             WriterCodeUtils.modifyCode(fileName, CommonUtils.contactCollectionWithToken(resultCodeList, ""));
-
         }
     }
 
     private static void modifyColumn(List<String> allCodeList,List<Column> columnList){
-        for(Column column : columnList){
-            for(String lineCode : allCodeList){
-
+        List<Column> needAddColumnList = new ArrayList<>(columnList);
+        Iterator<Column> columnIterator = needAddColumnList.iterator();
+        while(columnIterator.hasNext()){
+            Column column = columnIterator.next();
+            String getMethodName = NameUtils.getGetterMethodName(column.getCamelColName(),column.getColJavaType());
+            String setMethodName = NameUtils.getSetterMethodName(column.getCamelColName());
+            Iterator<String> codeIterator = allCodeList.iterator();
+            while(codeIterator.hasNext()){
+                String lineCode = codeIterator.next();
+                if(JavaCodeUtils.isGetMethod(lineCode,getMethodName)){
+                    codeIterator.remove();
+                    codeIterator.next();
+                    codeIterator.remove();
+                    codeIterator.next();
+                    codeIterator.remove();
+                }else if(JavaCodeUtils.isSetMethod(lineCode,setMethodName)){
+                    codeIterator.remove();
+                    codeIterator.next();
+                    codeIterator.remove();
+                    codeIterator.next();
+                    codeIterator.remove();
+                }else if(JavaCodeUtils.isThisCol(lineCode,column.getCamelColName())){
+                    codeIterator.remove();
+                }
             }
+
         }
     }
 

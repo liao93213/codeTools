@@ -84,6 +84,13 @@ public class JavaCodeUtils {
         return content;
     }
 
+    public String interfaceToClassMethod(String interfaceMethod){
+        String classMethod = interfaceMethod.replaceAll(";","");
+        return classMethod + " {"+System.lineSeparator()+"##"+System.lineSeparator() + "    }";
+    }
+
+
+
     public static String createOneAttr(Column col){
         StringBuilder content = new StringBuilder();
         content.append("    private "+ col.getColJavaType() + " " + col.getCamelColName() + ";//"+col.getComment()+System.lineSeparator());

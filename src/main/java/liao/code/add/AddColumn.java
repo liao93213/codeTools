@@ -21,7 +21,7 @@ public class AddColumn {
     private static final Pattern BEAN_REGEX = Pattern.compile(BEAN_NAME_REGEX);
 
     public static void main(String[] args) throws IOException {
-        System.out.println("没有格式化的代码请谨慎使用");
+        System.out.println("没有格式化的代码请谨慎使用,mapper文件修改使用ParseMySQLDDL");
         System.out.println("请输入表名：");
         Scanner sc = new Scanner(System.in);
         Table table = null;

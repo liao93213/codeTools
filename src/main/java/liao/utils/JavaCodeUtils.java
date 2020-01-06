@@ -10,8 +10,34 @@ import java.util.regex.Pattern;
  * Created by cheng on 2019/9/21.
  */
 public class JavaCodeUtils {
-    private static final Pattern METHOD = Pattern.compile(".+([a-zA-Z0-9]+ *){2,4}\\(([a-zA-Z0-9]| )++");
+    private static final Pattern METHOD = Pattern.compile(".+([a-zA-Z0-9]+ *){2,4}\\(([a-zA-Z0-9<>]| )++");
+    private static final Pattern JAVA_PROPERTY = Pattern.compile(" *((private)|(protected)|(public))? *([a-zA-Z0-9<>]+ *){2};.*");
+
     private static final Pattern COMMENT = Pattern.compile("//");
+    public static Column parseToColumn(String line){
+        line = line.replaceAll("^ +","");
+        line = line.replaceAll("; *","");
+        String[] codes = line.split(" ");
+        String[] nameAndComment = codes[codes.length-1].split(";");
+        String propertyName = nameAndComment[0];
+        String comment = nameAndComment.length == 1 ? "" : nameAndComment[1];
+        Column column = new Column();
+        column.setCamelColName(propertyName);
+        column.setColJavaType(getJavaType((codes)));
+        column.setColName(propertyName);
+        column.setComment(comment);
+        return column;
+    }
+    private static String getJavaType(String[] codes){
+        if(codes[0].equals("private") || codes.equals("protected") || codes[0].equals("public")){
+            return codes[1];
+        }else{
+            return codes[0];
+        }
+    }
+    public static boolean isJavaProperty(String line){
+        return JAVA_PROPERTY.matcher(line).matches();
+    }
     public static boolean isMethod(String line){
         return METHOD.matcher(line).matches();
     }
@@ -34,7 +60,7 @@ public class JavaCodeUtils {
         return codes[2].equals(colName);
     }
 
-    public static StringBuilder getMethodDefine(List<Column> colList){
+    public static StringBuilder getColMethodDefine(List<Column> colList){
         StringBuilder content = new StringBuilder();
         for(Column col : colList){
             String getMethod = NameUtils.getGetterMethodName(col.getCamelColName(),col.getColJavaType());

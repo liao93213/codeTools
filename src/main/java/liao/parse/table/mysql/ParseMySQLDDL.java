@@ -25,7 +25,7 @@ public class ParseMySQLDDL {
             }
             ddlSql.add(line);
             if(line.substring(0,1).equals(")")){//最后一行
-                tableList.add(parseDDLSQL(ddlSql));
+                tableList.add(ParseDDLUtils.parseDDLSQL(ddlSql));
                 ddlSql = new ArrayList<String>();
             }
             if(line.trim().equalsIgnoreCase("##")){
@@ -39,23 +39,6 @@ public class ParseMySQLDDL {
                 classGenerator.generatorCode(table);
             }
         }
-    }
-    public static Table parseDDLSQL(List<String> sqlList){
-        String tableName = ParseDDLUtils.getTableName(sqlList.get(0));
-        Table table = new Table(tableName);
-        List<Column> columnList = new ArrayList<Column>();
-        table.setColumnList(columnList);
-        for(String oneLine : sqlList){
-            if(oneLine.substring(0,1).equals("`")){//是字段定义sql
-                columnList.add(ParseDDLUtils.getOneColumn(oneLine,tableName));
-            }
-            if(oneLine.substring(0,1).equals(")")){
-                String comment = ParseDDLUtils.getComment(oneLine,false);
-                comment = comment.replaceAll("表$","");
-                table.setComment(comment);
-            }
-        }
-        return table;
     }
 
 }

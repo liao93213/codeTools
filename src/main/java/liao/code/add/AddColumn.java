@@ -41,7 +41,12 @@ public class AddColumn {
             if ("##".equals(line)) {
                 break;
             }
-            Column column = ParseDDLUtils.getOneColumn(line, table.getTableName());
+            Column column = null;
+            if(JavaCodeUtils.isJavaProperty(line)){//如果是非数据库增加字段
+                column = JavaCodeUtils.parseToColumn(line);
+            }else {
+                column = ParseDDLUtils.getOneColumn(line, table.getTableName());
+            }
             columnList.add(column);
         }
         table.setColumnList(columnList);
@@ -53,12 +58,12 @@ public class AddColumn {
         List<String> needWriteFileNameList = getNeedWriteBeanName(table.getClassName());
         for (String fileName : needWriteFileNameList) {
             List<String> lineList = Files.readAllLines(Paths.get(fileName));
-            //先执行修改字段
+            //先执行修改字段，移除需要修改的字段相应的代码
             modifyColumn(lineList,table.getColumnList());
             String attrCode = JavaCodeUtils.createAttr(table.getColumnList()).toString();
-            String methodCode = JavaCodeUtils.getMethodDefine(table.getColumnList()).toString();
+            String methodCode = JavaCodeUtils.getColMethodDefine(table.getColumnList()).toString();
             boolean needMethod = needMethod(lineList);
-            int attrNum = getAttrNum(lineList);
+            int attrNum = getLastAttrNum(lineList);
             List<String> resultCodeList = new ArrayList<>();
             for (int i = 0; i < lineList.size(); i++) {
                 if (attrNum == i) {
@@ -89,7 +94,7 @@ public class AddColumn {
             while(codeIterator.hasNext()){
                 String lineCode = codeIterator.next();
                 if(JavaCodeUtils.isGetMethod(lineCode,getMethodName)){
-                    codeIterator.remove();
+                    codeIterator.remove();//删除需要修改的代码
                     codeIterator.next();
                     codeIterator.remove();
                     codeIterator.next();
@@ -101,14 +106,14 @@ public class AddColumn {
                     codeIterator.next();
                     codeIterator.remove();
                 }else if(JavaCodeUtils.isThisCol(lineCode,column.getCamelColName())){
-                    codeIterator.remove();
+                    codeIterator.remove();//删除需要修改的字段
                 }
             }
 
         }
     }
 
-    private static int getAttrNum(List<String> lineList) throws IOException {
+    private static int getLastAttrNum(List<String> lineList) throws IOException {
         for (int lineNum = 0; lineNum < lineList.size(); lineNum++) {
             if (JavaCodeUtils.isMethod(lineList.get(lineNum))) {
                 return lineNum-1;

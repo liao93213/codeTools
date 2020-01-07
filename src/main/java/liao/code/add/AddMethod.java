@@ -37,4 +37,8 @@ public class AddMethod {
         }
         sc.close();
     }
+
+    public static void getMethod(){
+
+    }
 }

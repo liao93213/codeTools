@@ -4,6 +4,7 @@ import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
 
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -12,11 +13,11 @@ import java.util.regex.Pattern;
 public class JavaCodeUtils {
     private static final Pattern METHOD = Pattern.compile(".+([a-zA-Z0-9]+ *){2,4}\\(([a-zA-Z0-9<>]| )++");
     private static final Pattern JAVA_PROPERTY = Pattern.compile(" *((private)|(protected)|(public))? *([a-zA-Z0-9<>]+ *){2};.*");
-
+    private static final String ACCESS_PERMISSION = "private|protected|public";
     private static final Pattern COMMENT = Pattern.compile("//");
     public static Column parseToColumn(String line){
         line = line.replaceAll("^ +","");
-        line = line.replaceAll("; *","");
+        line = line.replaceAll("; *",";");
         String[] codes = line.split(" ");
         String[] nameAndComment = codes[codes.length-1].split(";");
         String propertyName = nameAndComment[0];
@@ -51,13 +52,10 @@ public class JavaCodeUtils {
     }
 
     public static boolean isThisCol(String code,String colName){
-        code = code.replaceAll(";.+","");
-        code = code.replaceAll("^ +","");
-        String[] codes = code.split(" ");
-        if(codes.length < 3){
-            return false;
-        }
-        return codes[2].equals(colName);
+        Matcher matcher = Pattern.compile("( .+)( .+;)").matcher(code);
+        matcher.find();
+        String propertyName = matcher.group(2);
+        return propertyName.replaceAll("^ ","").equals(code);
     }
 
     public static StringBuilder getColMethodDefine(List<Column> colList){
@@ -123,9 +121,76 @@ public class JavaCodeUtils {
         return content.toString();
     }
 
+    public static String interfaceToMethod(String interfaceDefine,String alais,String suffix){
+        interfaceDefine = interfaceDefine.replaceAll("^ +","");
+        String[] defines = interfaceDefine.split(" ");
+        if(!ACCESS_PERMISSION.contains(defines[0])){//没有访问权限
+            interfaceDefine = "public " + interfaceDefine;
+        }else{//有访问权限，替换为public
+            interfaceDefine = "public" + interfaceDefine.substring(defines[0].length());
+        }
+        interfaceDefine = interfaceDefine.replaceAll("^ +","");
+        interfaceDefine = interfaceDefine.replaceAll(" *;"," {");
+        //String[] defines = interfaceDefine.split(" +");
+        String returnType = returnType(interfaceDefine);
+        String methodName = methodName(interfaceDefine);
+        String callParam = callParam(interfaceDefine);
+        StringBuilder method = new StringBuilder();
+        method.append("    @Override");
+        method.append(System.lineSeparator());
+        method.append("    "+interfaceDefine);
+        method.append(System.lineSeparator());
+        method.append("        ");
+        if(!returnType.equals("void")) {
+            method.append(returnType);
+            method.append(" result = ");
+        }
+        method.append(alais+NameUtils.getClassName(suffix));
+        method.append(".");
+        method.append(methodName);
+        method.append("(");
+        method.append(callParam);
+        method.append(")");
+
+        method.append(";"+System.lineSeparator());
+        if(!returnType.equals("void")) {
+            method.append("        return result;");
+        }
+        method.append(System.lineSeparator());
+        method.append("    }");
+        return method.toString();
+    }
+    private static String returnType(String interfaceDefine){
+        Matcher matcher = Pattern.compile("( .+)( .+\\()").matcher(interfaceDefine);
+        matcher.find();
+        String returnType = matcher.group(1);
+        return returnType.replaceAll("^ ","");
+    }
+
+    private static String methodName(String interfaceDefine){
+        Matcher matcher = Pattern.compile("( .+)( .+\\()").matcher(interfaceDefine);
+        matcher.find();
+        String methodName = matcher.group(2);
+        return methodName.replace("(","").replaceAll("^ *","");
+    }
+    private static String callParam(String interfaceDefine){
+        Matcher matcher = Pattern.compile("(\\(.+\\))").matcher(interfaceDefine);
+        matcher.find();
+        String callParam = matcher.group();
+        callParam = callParam.replace("(","");
+        callParam = callParam.replace(")","");
+        String[] params =  callParam.split(",");
+        StringBuilder paramBuilder = new StringBuilder();
+        for(int i = 0;i < params.length;i++){
+            params[i] = params[i].replaceAll(" *$","");//移除逗号前的空格
+            params[i] =  params[i].replaceAll(".+ +","");//移除类型
+            paramBuilder.append(params[i]);
+        }
+        return paramBuilder.toString();
+    }
+
 
     public static void main(String[] args){
-        System.out.println(isMethod("static StringBuilder createAttr("));
-        System.out.println(isMethod("private static StringBuilder createAttr;"));
+        System.out.println(interfaceToMethod("private StringBuilder createAttr(List<Column> colList);","Order","manager"));
     }
 }

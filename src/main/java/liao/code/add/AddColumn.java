@@ -22,7 +22,9 @@ public class AddColumn {
 
     public static void main(String[] args) throws IOException {
         System.out.println("没有格式化的代码请谨慎使用,mapper文件修改使用ParseMySQLDDL");
-        System.out.println("请输入表名：");
+        System.out.println("新加字段或者字段名称修改时表现为新增，类型或者注释修改时会在原基础上修改");
+        System.out.println("可输入java字段定义，也可以输入ddl语句");
+        System.out.println("请输入表名或者类型名称：");
         Scanner sc = new Scanner(System.in);
         Table table = null;
         while (sc.hasNext()) {
@@ -55,7 +57,7 @@ public class AddColumn {
     }
 
     public static void writeBean(Table table) throws IOException {
-        List<String> needWriteFileNameList = getNeedWriteBeanName(table.getClassName());
+        List<String> needWriteFileNameList = getNeedWriteBeanName(table.getClassName(),BEAN_NAME_REGEX);
         for (String fileName : needWriteFileNameList) {
             List<String> lineList = Files.readAllLines(Paths.get(fileName));
             //先执行修改字段，移除需要修改的字段相应的代码
@@ -140,10 +142,10 @@ public class AddColumn {
         return false;
     }
 
-    public static List<String> getNeedWriteBeanName(String className) {
+    public static List<String> getNeedWriteBeanName(String className,String classNameRegex) {
         List<String> fileNameList = new ArrayList<>();
         WriterCodeUtils.listFileName(BEAN_DIR,fileNameList);
-        Pattern BEAN_REGEX = Pattern.compile(BEAN_NAME_REGEX.replace("##",className));
+        Pattern BEAN_REGEX = Pattern.compile(classNameRegex.replace("##",className));
         List<String> resultList = new ArrayList<>();
         for (String fileName : fileNameList) {
             String[] dirs = fileName.split("\\\\");

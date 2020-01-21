@@ -3,38 +3,37 @@ package liao.utils;
 import liao.parse.table.model.Column;
 import liao.parse.table.model.Table;
 
+import java.io.File;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by cheng on 2019/9/21.
  */
 public class JavaCodeUtils {
-    private static final Pattern METHOD = Pattern.compile(".+([a-zA-Z0-9]+ *){2,4}\\(([a-zA-Z0-9<>]| )++");
+    private static final Pattern METHOD = Pattern.compile(".+([a-zA-Z0-9]+ *){2,4}\\(([a-zA-Z0-9<>,]| )+.*;?");
     private static final Pattern JAVA_PROPERTY = Pattern.compile(" *((private)|(protected)|(public))? *([a-zA-Z0-9<>]+ *){2};.*");
     private static final String ACCESS_PERMISSION = "private|protected|public";
     private static final Pattern COMMENT = Pattern.compile("//");
+    private static final  Pattern CLASS_LAST_LINE = Pattern.compile("^ *}.*");
+    private static final Properties properties = PropertyUtils.getConfig("config");
+    private static final String MVC_NAME = properties.getProperty("mvc");
+
     public static Column parseToColumn(String line){
-        line = line.replaceAll("^ +","");
-        line = line.replaceAll("; *",";");
-        String[] codes = line.split(" ");
-        String[] nameAndComment = codes[codes.length-1].split(";");
-        String propertyName = nameAndComment[0];
-        String comment = nameAndComment.length == 1 ? "" : nameAndComment[1];
+
+        String propertyName = PatternUtils.group(2,"(.+) *([a-zA-Z0-9-_$]+);",line);
+        String javaType = PatternUtils.group(1," *(.+) *(.+);",line);
+        String comment = PatternUtils.replaceAll(line,".+;","//","/\\*\\*","/\\*","\\*/");
         Column column = new Column();
         column.setCamelColName(propertyName);
-        column.setColJavaType(getJavaType((codes)));
+        column.setColJavaType(javaType);
         column.setColName(propertyName);
         column.setComment(comment);
         return column;
-    }
-    private static String getJavaType(String[] codes){
-        if(codes[0].equals("private") || codes.equals("protected") || codes[0].equals("public")){
-            return codes[1];
-        }else{
-            return codes[0];
-        }
     }
     public static boolean isJavaProperty(String line){
         return JAVA_PROPERTY.matcher(line).matches();
@@ -189,8 +188,41 @@ public class JavaCodeUtils {
         return paramBuilder.toString();
     }
 
+    public static int getClassLastLine(List<String> codes){
+        for(int i = codes.size() - 1; i > 0;i--){
+            Matcher matcher = CLASS_LAST_LINE.matcher(codes.get(i));
+            if(matcher.matches()){
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("不是合法的class文件");
+    }
+
+    public static List<String> getMvcName(String javaClassName){
+        String[] names = MVC_NAME.split("\\|");
+        javaClassName = new File(javaClassName).getName();
+        javaClassName = javaClassName.replaceAll("Impl\\.java","");
+        for(int i = 0;i < names.length;i++){
+            if(javaClassName.endsWith(names[i])){
+                if(i > 0){
+                    return Stream.of(names[i-1],names[i]).collect(Collectors.toList());
+                }else{
+                    return Stream.of(names[i]).collect(Collectors.toList());
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public static boolean isImpl(String javaClassName){
+        javaClassName = new File(javaClassName).getName();
+        javaClassName = javaClassName.replaceAll("\\.java","");
+        return javaClassName.endsWith("Impl") || javaClassName.equals("Controller");
+    }
+
 
     public static void main(String[] args){
+        System.out.println(parseToColumn("private StringBuilder createAttr;//IIAAAA"));
         System.out.println(interfaceToMethod("private StringBuilder createAttr(List<Column> colList);","Order","manager"));
     }
 }

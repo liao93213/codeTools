@@ -16,9 +16,7 @@ import java.util.regex.Pattern;
  */
 public class AddColumn {
     private static final Properties properties = PropertyUtils.getConfig("config");
-    private static final String BEAN_DIR = properties.getProperty("base_dir");
     private static final String BEAN_NAME_REGEX = properties.getProperty("bean_name_regex");
-    private static final Pattern BEAN_REGEX = Pattern.compile(BEAN_NAME_REGEX);
 
     public static void main(String[] args) throws IOException {
         System.out.println("没有格式化的代码请谨慎使用,mapper文件修改使用ParseMySQLDDL");
@@ -57,7 +55,7 @@ public class AddColumn {
     }
 
     public static void writeBean(Table table) throws IOException {
-        List<String> needWriteFileNameList = getNeedWriteBeanName(table.getClassName(),BEAN_NAME_REGEX);
+        List<String> needWriteFileNameList = FileUtils.searchJavaFileByNameRegex(table.getClassName(),BEAN_NAME_REGEX);
         for (String fileName : needWriteFileNameList) {
             List<String> lineList = Files.readAllLines(Paths.get(fileName));
             //先执行修改字段，移除需要修改的字段相应的代码
@@ -140,26 +138,5 @@ public class AddColumn {
             }
         }
         return false;
-    }
-
-    public static List<String> getNeedWriteBeanName(String className,String classNameRegex) {
-        List<String> fileNameList = new ArrayList<>();
-        WriterCodeUtils.listFileName(BEAN_DIR,fileNameList);
-        Pattern BEAN_REGEX = Pattern.compile(classNameRegex.replace("##",className));
-        List<String> resultList = new ArrayList<>();
-        for (String fileName : fileNameList) {
-            String[] dirs = fileName.split("\\\\");
-            String javaFileName = dirs[dirs.length-1];
-            if(!javaFileName.endsWith(".java")){
-                continue;
-            }
-            javaFileName = javaFileName.replace(".java","");
-            if (javaFileName.equals(className) || (javaFileName.contains(className) && BEAN_REGEX.matcher(javaFileName).matches())) {
-                resultList.add(fileName);
-            }
-        }
-
-        return resultList;
-
     }
 }

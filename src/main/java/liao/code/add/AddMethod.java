@@ -1,44 +1,76 @@
 package liao.code.add;
 
-import liao.parse.table.model.Column;
-import liao.parse.table.model.Table;
-import liao.utils.ParseDDLUtils;
+import liao.utils.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
  * Created by cheng on 2020/1/4.
  */
 public class AddMethod {
+    private static final Properties properties = PropertyUtils.getConfig("config");
+    private static final String MVC_REGEX = properties.getProperty("mvc_regex");
 
     public static void main(String[] args) throws IOException {
         System.out.println("没有格式化的代码请谨慎使用,mapper文件修改使用ParseMySQLDDL");
         System.out.println("请输入表名：");
         Scanner sc = new Scanner(System.in);
-        Table table = null;
+        Method method = null;
         while (sc.hasNext()) {
             String line = sc.nextLine();
             if (line == null || line.trim().length() == 0) {
                 continue;
             } else {
-                table = new Table(line.trim());
+                method = new Method(NameUtils.getClassName(line.trim()));
                 break;
             }
         }
         System.out.println("新增的方法定义：");
         while (sc.hasNext()) {
-            String line = sc.nextLine().trim();
-            if ("##".equals(line)) {
+            String line = sc.nextLine();
+            if(line.trim().length() == 0){
+                continue;
+            }
+            if ("##".equals(line.trim())) {
                 break;
+            }else if(JavaCodeUtils.isMethod(line.trim())){
+                method.setInterfaceDefine(line.trim());
+            }else{
+                method.setComment(method == null ? line+System.lineSeparator() : method.getComment() + line+System.lineSeparator());
             }
         }
         sc.close();
+        writeMethod(method);
     }
 
-    public static void getMethod(){
-
+    public static void writeMethod(Method method) throws IOException {
+        List<String> needWriteFileNameList = FileUtils.searchJavaFileByNameRegex(method.getClassName(),MVC_REGEX,false);
+        for(String fileName : needWriteFileNameList){
+            List<String> lineList = Files.readAllLines(Paths.get(fileName));
+            boolean isImpl = JavaCodeUtils.isImpl(fileName);
+            String methodCode = method.getInterfaceDefine();
+            if(isImpl){
+                String suffix = JavaCodeUtils.getMvcName(fileName).get(0);
+                methodCode = method.getComment() + JavaCodeUtils.interfaceToMethod(method.getInterfaceDefine(), NameUtils.getAliasName(method.getClassName()),suffix);
+            }
+            int classLastLineNum = JavaCodeUtils.getClassLastLine(lineList) - 1;
+            List<String> resultCodeList = new ArrayList<>();
+            for (int i = 0; i < lineList.size(); i++) {
+                resultCodeList.add(lineList.get(i));
+                resultCodeList.add(System.lineSeparator());
+                if(i == classLastLineNum){
+                    resultCodeList.add(methodCode);
+                    resultCodeList.add(System.lineSeparator());
+                }
+            }
+            System.out.println("写入："+fileName);
+            WriterCodeUtils.modifyCode(fileName, CommonUtils.contactCollectionWithToken(resultCodeList, ""));
+        }
     }
 }

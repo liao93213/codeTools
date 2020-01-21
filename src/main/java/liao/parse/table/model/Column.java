@@ -67,4 +67,17 @@ public class Column {
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
+
+    @Override
+    public String toString() {
+        return "Column{" +
+                "colName='" + colName + '\'' +
+                ", camelColName='" + camelColName + '\'' +
+                ", colDBType='" + colDBType + '\'' +
+                ", colJavaType='" + colJavaType + '\'' +
+                ", comment='" + comment + '\'' +
+                ", isNullable=" + isNullable +
+                ", tableName='" + tableName + '\'' +
+                '}';
+    }
 }

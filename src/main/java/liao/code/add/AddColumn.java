@@ -42,6 +42,7 @@ public class AddColumn {
                 break;
             }
             if(line.trim().isEmpty()){
+
                 continue;
             }
             Column column = null;

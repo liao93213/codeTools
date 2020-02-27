@@ -41,6 +41,9 @@ public class AddColumn {
             if ("##".equals(line)) {
                 break;
             }
+            if(line.trim().isEmpty()){
+                continue;
+            }
             Column column = null;
             if(JavaCodeUtils.isJavaProperty(line)){//如果是非数据库增加字段
                 column = JavaCodeUtils.parseToColumn(line);
@@ -66,7 +69,7 @@ public class AddColumn {
             int attrNum = getLastAttrNum(lineList);
             List<String> resultCodeList = new ArrayList<>();
             for (int i = 0; i < lineList.size(); i++) {
-                if (attrNum == i) {
+                if (attrNum == i) {//
                     resultCodeList.add(lineList.get(i));
                     resultCodeList.add(System.lineSeparator());
                     resultCodeList.add(attrCode);
@@ -105,7 +108,7 @@ public class AddColumn {
                     codeIterator.remove();
                     codeIterator.next();
                     codeIterator.remove();
-                }else if(JavaCodeUtils.isThisCol(lineCode,column.getCamelColName())){
+                }else if(JavaCodeUtils.isJavaProperty(lineCode) && JavaCodeUtils.isThisCol(lineCode,column.getCamelColName())){
                     codeIterator.remove();//删除需要修改的字段
                 }
             }

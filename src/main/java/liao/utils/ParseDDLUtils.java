@@ -45,6 +45,9 @@ public class ParseDDLUtils {
     }
 
     public static Column getOneColumn(String oneLine, String tableName){
+        if(oneLine.trim().isEmpty()){
+            return  null;
+        }
         oneLine = oneLine.replaceAll("`|'|,","");
         String[] eles = oneLine.split(" ");
         String colName = eles[0];

@@ -51,10 +51,10 @@ public class JavaCodeUtils {
     }
 
     public static boolean isThisCol(String code,String colName){
-        Matcher matcher = Pattern.compile("( .+)( .+;)").matcher(code);
+        Matcher matcher = Pattern.compile("( .+)( .+);").matcher(code);
         matcher.find();
         String propertyName = matcher.group(2);
-        return propertyName.replaceAll("^ ","").equals(code);
+        return propertyName.replaceAll("^ ","").equals(colName);
     }
 
     public static StringBuilder getColMethodDefine(List<Column> colList){

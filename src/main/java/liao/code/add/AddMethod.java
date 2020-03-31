@@ -41,9 +41,9 @@ public class AddMethod {
             if ("##".equals(line.trim())) {
                 break;
             }else if(JavaCodeUtils.isMethod(line.trim())){//方法定义部分
-                method.setInterfaceDefine(line.trim());
+                method.setInterfaceDefine("    " + line.trim());
             }else{//注释部分
-                method.setComment(method == null ? line+System.lineSeparator() : method.getComment() + line+System.lineSeparator());
+                method.setComment(method.getComment() == null ? "    " + line.trim()+System.lineSeparator() : method.getComment() + "    " + line.trim()+System.lineSeparator());
             }
         }
         sc.close();

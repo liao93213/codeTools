@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  * Created by cheng on 2019/9/21.
  */
 public class JavaCodeUtils {
-    private static final Pattern METHOD = Pattern.compile(".+([a-zA-Z0-9]+ *){2,4}\\(([a-zA-Z0-9<>,]| )+.*;?");
+    private static final Pattern METHOD = Pattern.compile(".*([a-zA-Z0-9<>]+ +){1,3}([a-zA-Z0-9<>]+ *)\\(([a-zA-Z0-9<>,]| )+.*;?");
     private static final Pattern JAVA_PROPERTY = Pattern.compile(" *((private)|(protected)|(public))? *([a-zA-Z0-9<>]+ *){2};.*");
     private static final String ACCESS_PERMISSION = "private|protected|public";
     private static final Pattern COMMENT = Pattern.compile("//");
@@ -224,5 +224,8 @@ public class JavaCodeUtils {
     public static void main(String[] args){
         System.out.println(parseToColumn("private StringBuilder createAttr;//IIAAAA"));
         System.out.println(interfaceToMethod("private StringBuilder createAttr(List<Column> colList);","Order","manager"));
+        System.out.println(isMethod("    @ApiModelProperty (value = \"配送信息ID\")"));
+        System.out.println(isMethod(" private StringBuilder createAttr(List<Column> colList)"));
+
     }
 }

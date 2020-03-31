@@ -21,12 +21,7 @@ public class CommonUtils {
         }
         return null;
     }
-    public static boolean isEmpty(String str){
-        if(str == null || "".equals(str.trim())){
-            return true;
-        }
-        return false;
-    }
+
     public static  Map<Integer,String> convertEnumToMap(EnumValue[] values,boolean hasAll){
         LinkedHashMap<Integer,String> map = new LinkedHashMap<>();
 
@@ -123,5 +118,9 @@ public class CommonUtils {
             result = result.substring(0, result.length() - token.length());
         }
         return result;
+    }
+
+    public static boolean isEmpty(String string){
+        return string == null || string.trim().length() == 0;
     }
 }

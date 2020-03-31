@@ -35,4 +35,11 @@ public class FileUtils {
 
         return resultList;
     }
+
+    public static void main(String[] args){
+        List<String> needWriteFileNameList = FileUtils.searchJavaFileByNameRegex("DispatchTask","(^##Dao)|(^##Manager)|(^##Service)|(^##Controller)|(^##DaoImpl)|(^##ManagerImpl)|(^##ServiceImpl)|(^##ControllerImpl)",false);
+        System.out.println(needWriteFileNameList);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package liao.code.add;
 
 import liao.utils.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,9 +40,9 @@ public class AddMethod {
             }
             if ("##".equals(line.trim())) {
                 break;
-            }else if(JavaCodeUtils.isMethod(line.trim())){
+            }else if(JavaCodeUtils.isMethod(line.trim())){//方法定义部分
                 method.setInterfaceDefine(line.trim());
-            }else{
+            }else{//注释部分
                 method.setComment(method == null ? line+System.lineSeparator() : method.getComment() + line+System.lineSeparator());
             }
         }
@@ -57,7 +58,8 @@ public class AddMethod {
             String methodCode = method.getInterfaceDefine();
             if(isImpl){
                 String suffix = JavaCodeUtils.getMvcName(fileName).get(0);
-                methodCode = method.getComment() + JavaCodeUtils.interfaceToMethod(method.getInterfaceDefine(), NameUtils.getAliasName(method.getClassName()),suffix);
+                String comment = StringUtils.isBlank(method.getComment()) ? "" : method.getComment();
+                methodCode = comment + JavaCodeUtils.interfaceToMethod(method.getInterfaceDefine(), NameUtils.getAliasName(method.getClassName()),suffix);
             }
             int classLastLineNum = JavaCodeUtils.getClassLastLine(lineList) - 1;
             List<String> resultCodeList = new ArrayList<>();

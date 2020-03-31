@@ -201,7 +201,8 @@ public class JavaCodeUtils {
     public static List<String> getMvcName(String javaClassName){
         String[] names = MVC_NAME.split("\\|");
         javaClassName = new File(javaClassName).getName();
-        javaClassName = javaClassName.replaceAll("Impl\\.java","");
+        javaClassName = javaClassName.replaceAll("Impl","");
+        javaClassName = javaClassName.replaceAll("\\.java","");
         for(int i = 0;i < names.length;i++){
             if(javaClassName.endsWith(names[i])){
                 if(i > 0){
@@ -217,7 +218,7 @@ public class JavaCodeUtils {
     public static boolean isImpl(String javaClassName){
         javaClassName = new File(javaClassName).getName();
         javaClassName = javaClassName.replaceAll("\\.java","");
-        return javaClassName.endsWith("Impl") || javaClassName.equals("Controller");
+        return javaClassName.endsWith("Impl") || javaClassName.endsWith("Controller");
     }
 
 

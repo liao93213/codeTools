@@ -58,6 +58,9 @@ public class AddMethod {
             String methodCode = method.getInterfaceDefine();
             if(isImpl){
                 String suffix = JavaCodeUtils.getMvcName(fileName).get(0);
+                if(CommonUtils.isEmpty(suffix)){
+                    continue;
+                }
                 String comment = StringUtils.isBlank(method.getComment()) ? "" : method.getComment();
                 methodCode = comment + JavaCodeUtils.interfaceToMethod(method.getInterfaceDefine(), NameUtils.getAliasName(method.getClassName()),suffix);
             }

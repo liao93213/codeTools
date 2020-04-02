@@ -212,7 +212,7 @@ public class JavaCodeUtils {
                 }
             }
         }
-        throw new IllegalArgumentException();
+        return null;
     }
 
     public static boolean isImpl(String javaClassName){

@@ -33,6 +33,13 @@ public class WriterCodeUtils {
             file.createNewFile();
         }
     }
+    public static List<String> listFileNameByDirs(String[] dirs) {
+        List<String> fileList = new ArrayList<>();
+        for(String dir : dirs){
+            listFileName(dir,fileList);
+        }
+        return fileList;
+    }
 
     public static void listFileName(String dir,List<String> fileNameList) {
         File[] files = listFile(dir);

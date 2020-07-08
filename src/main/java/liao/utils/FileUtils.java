@@ -17,8 +17,7 @@ public class FileUtils {
     }
 
     public static List<String> searchJavaFileByNameRegex(String className, String classNameRegex, boolean needEquals) {
-        List<String> fileNameList = new ArrayList<>();
-        WriterCodeUtils.listFileName(BEAN_DIR, fileNameList);
+        List<String> fileNameList = WriterCodeUtils.listFileNameByDirs(BEAN_DIR.split(";"));
         Pattern BEAN_REGEX = Pattern.compile(classNameRegex.replace("##", className));
         List<String> resultList = new ArrayList<>();
         for (String fileName : fileNameList) {

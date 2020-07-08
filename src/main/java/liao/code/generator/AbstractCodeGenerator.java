@@ -20,6 +20,7 @@ public abstract class AbstractCodeGenerator {
         model = model.replaceAll("#className#", table.getClassName());
         model = model.replaceAll("#alias#", table.getAlias());
         model = model.replaceAll("#tableComment#", table.getComment());
+        model = model.replaceAll("#address#", table.getTableName().replaceAll("_","-"));
         String fileName = getFileName(table);
         WriterCodeUtils.writeCode(fileName,model);
     }

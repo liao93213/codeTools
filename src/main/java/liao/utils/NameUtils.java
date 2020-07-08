@@ -1,6 +1,7 @@
 package liao.utils;
 
-import java.io.File;
+import liao.utils.PropertyUtils;
+
 import java.util.Properties;
 
 /**
@@ -42,17 +43,20 @@ public class NameUtils {
         return pre+methodName;
     }
     public static String getClassName(String tableName){
-        String className = underline2Camel(tableName.replace(conf.getProperty("tablePre"),""));
+        String className = underline2Camel(tableName.replaceAll("^"+conf.getProperty("tablePre"),""));
         return firstCharUpper(className);
     }
 
     public static String getAliasName(String tableName){
-        String className = underline2Camel(tableName.replace(conf.getProperty("tablePre"),""));
+        String className = underline2Camel(tableName.replace("^"+conf.getProperty("tablePre"),""));
         return underline2Camel(className);
     }
 
     private static String firstCharUpper(String name){
         return name.substring(0,1).toUpperCase()+name.substring(1);
+    }
+    private static String firstCharLowwer(String name){
+        return name.substring(0,1).toLowerCase()+name.substring(1);
     }
 
 }

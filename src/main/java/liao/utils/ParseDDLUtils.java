@@ -17,7 +17,7 @@ public class ParseDDLUtils {
             return "Long";
         }else if(sqlType.equals("INT") || sqlType.equals("SMALLINT") || sqlType.equals("TINYINT")){
             return "Integer";
-        }else if (sqlType.equals("CHAR") || sqlType.equals("VARCHAR") || sqlType.equals("TEXT")){
+        }else if (sqlType.equals("CHAR") || sqlType.equals("VARCHAR") || sqlType.equals("TEXT") && sqlType.equals("LONGTEXT")){
             return "String";
         }else if(sqlType.equals("DATE") || sqlType.equals("DATETIME")){
             return "Date";

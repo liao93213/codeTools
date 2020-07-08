@@ -1,113 +1,107 @@
-package #basePackage#.facade.impl;
+package com.basic.ofc.facade.impl;
 
 import #basePackage#.domain.#className#;
-import #basePackage#.domain.enums.UserModeEnum;
 import #basePackage#.domain.example.#className#Example;
-import #basePackage#.domain.params.#className#Parameter;
-import #basePackage#.domain.params.SiteParameter;
-import #basePackage#.domain.result.#className#Result;
-import #basePackage#.domain.result.SiteResult;
 import #basePackage#.facade.api.#className#Facade;
-import #basePackage#.facade.api.dto.#className#Request;
-import #basePackage#.facade.api.dto.#className#Response;
-import #basePackage#.facade.api.dto.SiteResp;
+import #basePackage#.facade.api.dto.#className#Req;
+import #basePackage#.facade.api.dto.#className#Resp;
+
+import #basePackage#.facade.api.dto.Update#className#Req;
 import #basePackage#.facade.impl.convert.#className#Convert;
 import #basePackage#.service.api.#className#Service;
-import #basePackage#.service.api.SiteQueryService;
-import com.nicetuan.basic.common.base.EnumUtil;
 import com.nicetuan.basic.common.bean.CommonResultCode;
 import com.nicetuan.basic.common.bean.Response;
-import com.nicetuan.basic.common.bean.util.BeanUtils;
 import com.nicetuan.basic.common.bean.util.ResponseUtils;
-import com.nicetuan.basic.tool.context.UserContext;
-import lombok.extern.slf4j.Slf4j;
+import com.nicetuan.basic.common.util.CollectionUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * #tableComment#
  */
 @RestController
 @Slf4j
+@Api(value = "#alias#",tags = {"十荟团#tableComment#接口"})
 public class #className#Controller implements #className#Facade {
     @Autowired
     private #className#Service #alias#Service;
 
-    @PostMapping(value = "/#alias#/pageList", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "分页查询#tableComment#", notes = "分页查询#tableComment#")
+    @ApiImplicitParam(name = "request", value = "分页查询#tableComment#", required = true, dataType = "#className#Req", paramType = "body")
+    @PostMapping(value = "/#address#/pageList", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Override
-    public Response<Map<String, Object>> pageList(@RequestBody #className#Request request) {
+    public Response<#className#Resp> pageList(@RequestBody #className#Req request) {
+        request.setOffset((request.getP() - 1) * request.getSize());
         #className#Example #alias#Example = #className#Convert.requestToExample(request);
         List<#className#> resultList = #alias#Service.get#className#ListForPage(#alias#Example);
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("#alias#List", #className#Convert.domainToResponseList(resultList));
-        addEnumValue(resultMap);
-        return ResponseUtils.createSuccess(resultMap);
+        #className#Resp #alias#Resp = new #className#Resp();
+        #alias#Resp.setDataList(#className#Convert.domainToRespList(resultList));
+        #alias#Resp.setCount(#alias#Service.get#className#ListCount(#alias#Example));
+        return ResponseUtils.createSuccess(#alias#Resp);
     }
 
-    @PostMapping(value = "/#alias#/pageCount", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/#address#/pageCount", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Response<Integer> pageCount(@RequestBody #className#Request request) {
+    public Response<Integer> pageCount(@RequestBody #className#Req request) {
         #className#Example #alias#Example = #className#Convert.requestToExample(request);
         int count = #alias#Service.get#className#ListCount(#alias#Example);
         return ResponseUtils.createSuccess(count);
     }
 
-    private void addEnumValue(Map<String, Object> resultMap) {
-        
+    private void addEnumValue(#className#Resp #alias#Resp) {
     }
 
+    @ApiOperation(value = "编辑#tableComment#", notes = "编辑#tableComment#，跳转时调用")
+    @ApiImplicitParam(name = "request", value = "编辑#tableComment#", required = true, dataType = "Edit#className#Req", paramType = "body")
     @ResponseBody
-    @PostMapping(value = "/#alias#/getById", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/#address#/getById", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public Response<Map<String, Object>> get#className#ById(@RequestBody #className#Request request) {
-        #className#Example #alias#Example = #className#Convert.requestToExample(request);
-        #className# #alias# = #alias#Service.get#className#ById(#alias#Example);
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("#alias#List",#className#Convert.domainToResponse(#alias#));
-        addEnumValue(resultMap);
-        return ResponseUtils.createSuccess(resultMap);
+    public Response<#className#Resp> get#className#ByForEdit(@RequestBody Edit#className#Req request) {
+        #className#Example #alias#Example = #className#Convert.editReqToExample(request);
+        List<#className#> #alias#List = #alias#Service.get#className#ById(#alias#Example);
+        #className#Resp #alias#Resp = new #className#Resp();
+        #alias#Resp.setDataList(#className#Convert.domainToRespList(#alias#List));
+        addEnumValue(#alias#Resp);
+        return ResponseUtils.createSuccess(#alias#Resp);
     }
 
+    @ApiOperation(value = "页面查询条件", notes = "页面查询条件，列表新增保存同用")
+    @ApiImplicitParam(name = "request", value = "页面查询条件")
     @ResponseBody
-    @PostMapping(value = "/#alias#/toAdd", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Map<String,Object>> toAdd(){
-        Map<String, Object> resultMap = new HashMap<>();
-        addEnumValue(resultMap);
-        return ResponseUtils.createSuccess(resultMap);
+    @PostMapping(value = "/#address#/getQueryCondition", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Response<#className#Resp> getQueryCondition(){
+        #className#Resp #alias#Resp = new #className#Resp();
+        addEnumValue(#alias#Resp);
+        return ResponseUtils.createSuccess(#alias#Resp);
     }
 
+    @ApiOperation(value = "批量新增#tableComment#", notes = "新增#tableComment#，保存时调用")
+    @ApiImplicitParam(name = "request", value = "批量新增#tableComment#", required = true, dataType = "Edit#className#Req", paramType = "body")
     @ResponseBody
-    @PostMapping(value = "/#alias#/saveAll", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/#address#/save-all", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public Response saveAll(@RequestBody List<#className#Request> requestList) {
-        #alias#Service.saveAll#className#(#className#Convert.requestToDomainList(requestList));
+    public Response saveAll(@RequestBody List<Update#className#Req> requestList) {
+        #alias#Service.saveAll#className#(#className#Convert.updateReqToDomainList(requestList));
         return ResponseUtils.create(CommonResultCode.SUCCESS,"新增#tableComment#成功！");
     }
 
     @ResponseBody
-    @PostMapping(value = "/#alias#/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/#alias#/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public Response update(@RequestBody #className#Request request) {
-        #alias#Service.update#className#(#className#Convert.requestToDomain(request));
-        return ResponseUtils.create(CommonResultCode.SUCCESS,"更新#tableComment#成功！");
-    }
-
-    @ResponseBody
-    @PostMapping(value = "/#alias#/saveOne", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Override
-    public Response saveOne(@RequestBody #className#Request request) {
-        #alias#Service.insert#className#(#className#Convert.requestToDomain(request));
-        return ResponseUtils.create(CommonResultCode.SUCCESS,"更新#tableComment#成功！");
+    public Response save(@RequestBody Update#className#Req request) {
+        #alias#Service.insert#className#(#className#Convert.updateReqToDomain(request));
+        return ResponseUtils.create(CommonResultCode.SUCCESS,"更新新#tableComment#成功！");
     }
 
 }

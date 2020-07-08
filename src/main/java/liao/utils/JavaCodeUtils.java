@@ -25,8 +25,8 @@ public class JavaCodeUtils {
 
     public static Column parseToColumn(String line){
 
-        String propertyName = PatternUtils.group(2,"(.+) *([a-zA-Z0-9-_$]+);",line);
-        String javaType = PatternUtils.group(1," *(.+) *(.+);",line);
+        String propertyName = PatternUtils.group(2,"(.+) ([a-zA-Z0-9-_$]+);",line);
+        String javaType = PatternUtils.group(1," *([a-zA-Z0-9-_$]+) *([a-zA-Z0-9-_$]+);",line);
         String comment = PatternUtils.replaceAll(line,".+;","//","/\\*\\*","/\\*","\\*/");
         Column column = new Column();
         column.setCamelColName(propertyName);

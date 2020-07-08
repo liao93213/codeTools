@@ -1,7 +1,9 @@
 package #basePackage#.facade.api;
 
-import #basePackage#.facade.api.dto.#className#Request;
-import #basePackage#.facade.api.dto.#className#Response;
+import #basePackage#.facade.api.dto.#className#Req;
+import #basePackage#.facade.api.dto.Update#className#Req;
+import #basePackage#.facade.api.dto.Edit#className#Req;
+import #basePackage#.facade.api.dto.#className#Resp;
 import com.nicetuan.basic.common.bean.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -14,18 +16,18 @@ import java.util.Map;
 /**
  * #tableComment#
  */
-@FeignClient(value = "nicetuan-ofc")
+@FeignClient(value = "nicetuan-tms")
 public interface #className#Facade {
-    @PostMapping(value = "/#alias#/pageLis", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Response<Map<String,Object>> pageList(@RequestBody #className#Request request);
-    @PostMapping(value = "/#alias#/pageCount", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Response<Integer> pageCount(@RequestBody #className#Request request);
-    @PostMapping(value = "/#alias#/getById", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Response<Map<String, Object>> get#className#ById(@RequestBody #className#Request request);
-    @PostMapping(value = "/#alias#/saveAll", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Response<Boolean> saveAll(@RequestBody List<#className#Request> requestList);
-    @PostMapping(value = "/#alias#/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Response<Boolean> update(@RequestBody #className#Request requestList);
-    @PostMapping(value = "/#alias#/saveOne", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Response saveOne(@RequestBody #className#Request request);
+@PostMapping(value = "/#address#/page-list", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<#className#Resp> pageList(@RequestBody #className#Req request);
+    @PostMapping(value = "/#address#/page-count", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Integer> pageCount(@RequestBody #className#Req request);
+    @PostMapping(value = "/#address#/get-byId", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<#className#Resp> get#className#ByForEdit(@RequestBody Edit#className#Req request);
+    @PostMapping(value = "/#address#/save-all", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Boolean> saveAll(@RequestBody List<Update#className#Req> requestList);
+    @PostMapping(value = "/#address#/updateSiteAll", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response<Boolean> update(@RequestBody List<Update#className#Req> requestList);
+    @PostMapping(value = "/#address#/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Response save(@RequestBody Update#className#Req request);
 }
